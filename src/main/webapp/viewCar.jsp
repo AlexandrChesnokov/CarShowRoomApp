@@ -35,7 +35,7 @@
         </tr>
 
 
-    <input type="button" onclick="history.back();" value="Back"/>
+   
 </table>
 <security:authorize access="hasAuthority('ADMIN')">
     <a id="" href="/editCar?id=${car.id}">Edit</a>

@@ -84,6 +84,7 @@ public class CarController {
     public String editCar(@ModelAttribute Car car,
                           @RequestParam int id) {
       car.setId(id);
+        System.out.println("<<<<< CAR ID " + car.getId());
         System.out.println("<<<<< CAR price " + car.getPrice());
         System.out.println("<<<<< CAR hp " + car.getHp());
       carService.editCarByParams(car);

@@ -14,19 +14,13 @@
 <body>
         <form:form name="editForm" action="/editCar?id=${car.id}" method="post" modelAttribute="car">
 
-            <input id="editPrice" value="${car.price}" type="number">
+         price:   <form:input path="price" value="${car.price}" type="number"/>
+         hp:   <form:input path="hp" value="${car.hp}" type="number"/>
+         color:   <form:input path="color" value="${car.color}" type="text"/>
 
-            <input id="editColor" value="${car.color}" type="text">
+            <input onclick="confirm('Are you sure?')" type="submit" value="Apply changes">
 
-            <input id="editHp" value="${car.hp}" type="number">
-
-            <input onclick="confirm('Are you sure?')" type="submit" value="Edit">
         </form:form>
 
-
-<script>
-
-
-</script>
 </body>
 </html>
