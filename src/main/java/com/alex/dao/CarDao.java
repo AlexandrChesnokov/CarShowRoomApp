@@ -1,0 +1,24 @@
+package com.alex.dao;
+
+import com.alex.model.Car;
+import com.alex.model.Parameters;
+
+import java.sql.SQLException;
+import java.util.List;
+
+public interface CarDao {
+
+    List<Car> showAllCars() throws SQLException;
+
+    List<Car> findCarsByParams(Parameters parameters) throws SQLException;
+
+    List<Car> findCarByMaker(String maker) throws SQLException;
+
+    Car findCarById(int id) throws SQLException;
+
+    void editCarByParams(Car car);
+
+
+
+
+}

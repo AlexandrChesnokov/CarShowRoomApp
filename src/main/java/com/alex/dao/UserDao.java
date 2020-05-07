@@ -1,0 +1,23 @@
+package com.alex.dao;
+
+import com.alex.model.Role;
+import com.alex.model.User;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Set;
+
+public interface UserDao {
+
+    List<User> getAll() throws SQLException;
+
+    User getOne(String email) throws SQLException;
+
+    void add(User user) throws SQLException;
+
+    User findByEmail(String email);
+
+    Set<Role> getUserRolesById(int id);
+
+    Role getRoleById(int id);
+}
