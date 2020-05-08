@@ -21,6 +21,6 @@
             <input onclick="confirm('Are you sure?')" type="submit" value="Apply changes">
 
         </form:form>
-
+        <a href="/">Main menu</a>
 </body>
 </html>

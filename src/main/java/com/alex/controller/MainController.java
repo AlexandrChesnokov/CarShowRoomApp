@@ -7,6 +7,7 @@ import com.alex.service.UserService;
 import com.alex.util.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,25 +31,29 @@ public class MainController {
     UserValidator userValidator;
 
 
-
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER', 'MANAGER')")
     @GetMapping("/")
     public String getWelcomePage(Model model) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        model.addAttribute("firstname", user.getFirstname());
         return "welcome";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/users")
     public String getUsers(Model model) throws SQLException {
         model.addAttribute("users", userService.showAll());
         return "users";
 
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/changeRole")
     public String changeRole(Model model, @RequestParam(value = "id") int id) {
         model.addAttribute("user", userService.findUserById(id));
             return "changeRole";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/changeRole")
     public String changeRole(@RequestParam(value = "id") int id,
                              @ModelAttribute User user) {

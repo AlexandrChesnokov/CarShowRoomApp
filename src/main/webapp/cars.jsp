@@ -31,6 +31,8 @@
     </c:forEach>
     <input type="button" onclick="history.back();" value="Back"/>
 </table>
+
+<a href="/">Main menu</a>
 <a href="/logout"></a>
 </body>
 </html>

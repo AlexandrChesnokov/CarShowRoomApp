@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: lohpi
@@ -24,22 +25,20 @@
   </style>
 </head>
 <body>
-  <c:if test="${pageContext.request.userPrincipal.name != null}">
-    <form id="logoutForm" method="post" action="/logout">
-      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-    </form>
-    <h2> Hello ${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()">
-      logout
-    </a> </h2>
-  </c:if>
+<h2> Hello ${firstname}!
+
+
 
   <a href="/searchCars" class="btn">Quick search</a>
 
-  <form id="showCars" action="" method="get">
-<input name="cars" type="submit" formaction="/cars" value="Show all cars" formmethod="get"/>
-  </form>
+
+  <a href="/cars" class="btn">Show all cars</a>
 
   <a href="/logout">Logout</a>
+
+  <security:authorize access="hasAuthority('ADMIN')">
+  <a id="" href="/users">Users</a>
+  </security:authorize>
 
 
   <div><h1>${result}</h1></div>

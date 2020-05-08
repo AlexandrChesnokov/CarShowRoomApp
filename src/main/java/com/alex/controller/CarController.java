@@ -9,6 +9,7 @@ import com.alex.model.Parameters;
 import com.alex.model.User;
 import com.alex.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +28,7 @@ public class CarController {
     @Autowired
     CarService carService;
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER', 'MANAGER')")
     @GetMapping("/cars")
     public String getCars(Model model) throws SQLException {
         model.addAttribute("cars", carService.showAllCars());
@@ -34,6 +36,7 @@ public class CarController {
 
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER', 'MANAGER')")
     @GetMapping("/searchCarsByMaker")
     public String searchCars(Model model, @RequestParam(value = "")String maker) {
         String carName = maker;
@@ -41,6 +44,7 @@ public class CarController {
         return "cars";
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER', 'MANAGER')")
     @GetMapping("/viewCar")
     public String viewCar(Model model, @RequestParam(name = "id") int id) {
         System.out.println(id);
@@ -54,6 +58,7 @@ public class CarController {
         return "viewCar";
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER', 'MANAGER')")
     @GetMapping("/searchCarsByParams")
     public String searchCarsByParams(@RequestParam(value = "fromYear") String fromYear,
                                      @RequestParam(value = "toYear") String toYear,
@@ -80,6 +85,7 @@ public class CarController {
 
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN',  'MANAGER')")
     @GetMapping("/editCar")
     public String editCar(Model model,
                           @RequestParam(value = "id") int id) {
@@ -89,6 +95,7 @@ public class CarController {
     }
 
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
     @PostMapping("/editCar")
     public String editCar(@ModelAttribute Car car,
                           @RequestParam int id) {
@@ -98,23 +105,27 @@ public class CarController {
       return "welcome";
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
     @GetMapping("deleteCar")
     public String deleteCar(Model model, @RequestParam(value = "id") int id) {
         carService.deleteCarById(id);
         return "welcome";
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER', 'MANAGER')")
     @GetMapping("/searchCars")
     public String searchCars() {
         return "searchCars";
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
     @GetMapping("/addCar")
     public String addCar(Model model) {
         model.addAttribute("car", new Car());
         return "addCar";
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
     @PostMapping("/addCar")
     public String addCar(@ModelAttribute Car car, Model model) {
         carService.addCar(car);
@@ -122,6 +133,7 @@ public class CarController {
     }
 
     @PostMapping("/orderCar")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER', 'MANAGER')")
     public String orderCar(@RequestParam(value = "carId") int carId,
                            @ModelAttribute Enhance enhance,
                            Model model) {

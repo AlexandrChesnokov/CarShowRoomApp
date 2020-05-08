@@ -129,6 +129,8 @@
    <p> <input type="button" name="button" onclick="searchByParams()" value="search"></p>
 </form>
 
+<a href="/">Main menu</a>
+
 <span id="myLocation"></span>
 </body>
 </html>

@@ -43,7 +43,7 @@
     </tr>
         </c:forEach>
 
-
+    <a href="/">Main menu</a>
 
 </table>
 <a href="/logout">Logout</a>

@@ -50,9 +50,10 @@
     <input onclick="confirm('Are you sure?')" type="submit" value="To order">
 </form:form>
 
+<a href="/">Main menu</a>
 
 
-<security:authorize access="hasAuthority('ADMIN')">
+<security:authorize access="hasAnyAuthority('ADMIN', 'MANAGER')">
     <a id="" href="/editCar?id=${car.id}">Edit</a>
 
     <a id="" onclick="confirm('Are you sure?')" href="/deleteCar?id=${car.id}">Delete</a>
