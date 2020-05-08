@@ -69,11 +69,6 @@
         var phoneResult = phoneRGEX.test(phone_number.value);
         var emailResult = emailRGEX.test(email.value);
 
-
-
-
-       
-
         if (!firstname.value || firstname.value.length < 1 || firstname.value.length > 16) {
             firstname.style.border = "2px solid red";
 

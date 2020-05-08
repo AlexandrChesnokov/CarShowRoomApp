@@ -20,16 +20,22 @@ public class UserDAOImpl implements UserDao {
         Connection conn = ConnectionPool.getInstance().getConnection();
         List<User> users = new ArrayList<>();
         try {
-            PreparedStatement ps = conn.prepareStatement("select * from users");
+            PreparedStatement ps = conn.prepareStatement("select u.*, r.id, r.name \n" +
+                    "from users u join user_roles ur on u.id = ur.user_id join roles r on ur.role_id = r.id;");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 User user = new User();
+                Role role = new Role();
+                user.setId(rs.getInt(1));
                 user.setFirstname(rs.getString(2));
                 user.setLastname(rs.getString(3));
                 user.setPhone_number(rs.getString(4));
                 user.setEmail(rs.getString(5));
                 user.setManager_id(rs.getInt(6));
                 user.setPassword(rs.getString(7));
+                role.setId(rs.getInt(8));
+                role.setName(rs.getString(9));
+                user.setRole(role);
                 users.add(user);
             }
         } catch (SQLException e) {
@@ -119,8 +125,8 @@ public class UserDAOImpl implements UserDao {
                 user.setLastname(rs.getString(3));
                 user.setEmail(rs.getString(5));
                 user.setPassword(rs.getString(7));
-                Set<Role> roleSet = getUserRolesById(user.getId());
-                user.setRoles(roleSet);
+                Role role = getUserRolesById(user.getId());
+                user.setRole(role);
                 conn.close();
                 return user;
             }
@@ -135,23 +141,26 @@ public class UserDAOImpl implements UserDao {
     }
 
     @Override
-    public Set<Role> getUserRolesById(int id) {
+    public Role getUserRolesById(int id) {
         Connection conn = ConnectionPool.getInstance().getConnection();
-        Set<Role> roles = new HashSet<>();
+       Role role = new Role();
 
         try {
             PreparedStatement ps = conn.prepareStatement(
                     "select * from user_roles where user_id = ?"
             );
 
+
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
 
-            while (rs.next()) {
-                roles.add(getRoleById(rs.getInt(2)));
+            if (rs.next()) {
+                role = getRoleById(rs.getInt(2));
             }
 
 
+
+            return role;
         } catch (SQLException e) {
             //ss
         }
@@ -160,7 +169,8 @@ public class UserDAOImpl implements UserDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return roles;
+
+        return role;
     }
 
     @Override
@@ -168,7 +178,6 @@ public class UserDAOImpl implements UserDao {
         Connection conn = ConnectionPool.getInstance().getConnection();
 
         Role role = new Role();
-
         try {
             PreparedStatement ps = conn.prepareStatement("select * from roles where id = ?;");
             ps.setInt(1, id);
@@ -190,5 +199,71 @@ public class UserDAOImpl implements UserDao {
             e.printStackTrace();
         }
         return role;
+    }
+
+    @Override
+    public void changeRole(User user) {
+
+        Connection conn = ConnectionPool.getInstance().getConnection();
+
+        try {
+
+            PreparedStatement ps = conn
+                    .prepareStatement("update user_roles set role_id = (select id from roles where name = ?)" +
+                            "where user_id = ?");
+
+            ps.setString(1, user.getRole().getName());
+            ps.setInt(2, user.getId());
+            ps.executeUpdate();
+            conn.close();
+
+        } catch (SQLException e) {
+            //ss
+        }
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public User findUserById(int id) {
+
+        Connection conn = ConnectionPool.getInstance().getConnection();
+
+        try {
+            PreparedStatement ps = conn.prepareStatement("select u.*, r.id, r.name \n" +
+                    "from users u join user_roles ur on u.id = ur.user_id join roles r on ur.role_id = r.id where u.id = ?;");
+
+            ps.setInt(1, id);
+
+            ResultSet rs = ps.executeQuery();
+            User user = new User();
+            if (rs.next()) {
+                Role role = new Role();
+                user.setId(rs.getInt(1));
+                user.setFirstname(rs.getString(2));
+                user.setLastname(rs.getString(3));
+                user.setPhone_number(rs.getString(4));
+                user.setEmail(rs.getString(5));
+                user.setManager_id(rs.getInt(6));
+                user.setPassword(rs.getString(7));
+                role.setId(rs.getInt(8));
+                role.setName(rs.getString(9));
+                user.setRole(role);
+            }
+
+            return user;
+
+
+
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

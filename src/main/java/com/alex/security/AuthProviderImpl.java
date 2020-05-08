@@ -50,9 +50,9 @@ public class AuthProviderImpl implements AuthenticationProvider {
 
         List<GrantedAuthority> authorityList = new ArrayList<>();
 
-        for(Role role : user.getRoles()) {
-            authorityList.add(new SimpleGrantedAuthority(role.getName()));
-        }
+
+            authorityList.add(new SimpleGrantedAuthority(user.getRole().getName()));
+
 
 
 

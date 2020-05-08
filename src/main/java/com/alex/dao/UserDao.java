@@ -17,7 +17,11 @@ public interface UserDao {
 
     User findByEmail(String email);
 
-    Set<Role> getUserRolesById(int id);
+    Role getUserRolesById(int id);
 
     Role getRoleById(int id);
+
+    User findUserById(int id);
+
+    void changeRole(User user);
 }

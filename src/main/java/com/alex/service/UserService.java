@@ -16,4 +16,8 @@ public interface UserService {
 
     User findByEmail(String email);
 
+    User findUserById(int id);
+
+    void changeRole(User user);
+
 }

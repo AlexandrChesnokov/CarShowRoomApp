@@ -37,14 +37,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public void save(User user) throws SQLException {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-       Set<Role> roles = new HashSet<>();
-       roles.add(roleDao.getOne(3));
-       user.setRoles(roles);
+       user.setRole(roleDao.getOne(3));
        userDAO.add(user);
     }
 
     @Override
     public User findByEmail(String email) {
         return userDAO.findByEmail(email);
+    }
+
+    @Override
+    public User findUserById(int id) {
+      return userDAO.findUserById(id);
+    }
+
+    @Override
+    public void changeRole(User user) {
+        userDAO.changeRole(user);
     }
 }

@@ -26,6 +26,7 @@
         <th>email</th>
         <th>manager</th>
         <th>password</th>
+        <th>role</th>
         <th>action</th>
     </tr>
 
@@ -37,7 +38,8 @@
             <td>${user.email}</td>
             <td>${user.manager_id}</td>
             <td>${user.password}</td>
-            <td><input type="submit" name="delete" value="Delete"></td>
+            <td>${user.role.name}</td>
+            <td><a href="/changeRole?id=${user.id}">Change role</a></td>
     </tr>
         </c:forEach>
 

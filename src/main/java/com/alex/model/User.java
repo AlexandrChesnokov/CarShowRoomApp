@@ -10,7 +10,7 @@ public class User {
 
     private int id;
 
-    private Set<Role> roles;
+    private Role role;
 
 
     @Size(min = 1, max = 16, message = "Name should be from 1 to 16 symbols")
@@ -43,13 +43,13 @@ public class User {
     public User() {
     }
 
-    public User(int id, Set<Role> roles, @Size(min = 1, max = 16, message = "Name should be from 1 to 16 symbols") String firstname, @Size(min = 1, max = 16, message = "Surname should be from 1 to 16 symbols")
+    public User(int id, Role role, @Size(min = 1, max = 16, message = "Name should be from 1 to 16 symbols") String firstname, @Size(min = 1, max = 16, message = "Surname should be from 1 to 16 symbols")
             String lastname, @Min(value = 9, message = "need 9") String phone_number,
                 @Email(message = "Invalid Email Format")
                         String email, int manager_id,
                 @Size(min = 8, message = "Password must be at least 8 characters long") String password, String password2) {
         this.id = id;
-        this.roles = roles;
+        this.role = role;
         this.firstname = firstname;
         this.lastname = lastname;
         this.phone_number = phone_number;
@@ -59,12 +59,12 @@ public class User {
         this.password2 = password2;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public int getId() {
