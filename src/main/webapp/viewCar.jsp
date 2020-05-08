@@ -23,7 +23,7 @@
         <th>Color</th>
         <th>Year</th>
         <th>Hp</th>
-        <th>Action</th>
+        <th>Status</th>
     </tr>
     <tr>
             <td>${car.maker_name}</td>
@@ -32,11 +32,26 @@
             <td>${car.color}</td>
             <td>${car.year}</td>
             <td>${car.hp}</td>
+            <td>${status}</td>
         </tr>
 
 
 
 </table>
+
+<form:form method="post" action="/orderCar?carId=${car.id}" modelAttribute="enh">
+
+    <form:select path="id">
+        <form:option value="0"></form:option>
+        <form:option value="1">STAGE 1</form:option>
+        <form:option value="2">STAGE 2</form:option>
+        <form:option value="3">STAGE 3</form:option>
+    </form:select>
+    <input onclick="confirm('Are you sure?')" type="submit" value="To order">
+</form:form>
+
+
+
 <security:authorize access="hasAuthority('ADMIN')">
     <a id="" href="/editCar?id=${car.id}">Edit</a>
 
@@ -46,10 +61,6 @@
 </security:authorize>
 
 <script>
-
-
-
-
 
 </script>
 </body>

@@ -4,9 +4,12 @@ package com.alex.controller;
 import com.alex.dao.CarDao;
 import com.alex.dao.UserDao;
 import com.alex.model.Car;
+import com.alex.model.Enhance;
 import com.alex.model.Parameters;
+import com.alex.model.User;
 import com.alex.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,6 +45,12 @@ public class CarController {
     public String viewCar(Model model, @RequestParam(name = "id") int id) {
         System.out.println(id);
         model.addAttribute("car", carService.findCarById(id));
+        model.addAttribute("enh", new Enhance());
+        if (carService.isAvailable(id)) {
+            model.addAttribute("status", "is available");
+        } else {
+            model.addAttribute("status", "sold");
+        }
         return "viewCar";
     }
 
@@ -110,6 +119,28 @@ public class CarController {
     public String addCar(@ModelAttribute Car car, Model model) {
         carService.addCar(car);
         return "welcome";
+    }
+
+    @PostMapping("/orderCar")
+    public String orderCar(@RequestParam(value = "carId") int carId,
+                           @ModelAttribute Enhance enhance,
+                           Model model) {
+
+
+
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int userId = user.getId();
+
+        if (carService.isAvailable(carId)) {
+            carService.orderCar(userId, carId, enhance.getId());
+            model.addAttribute("result", "Your order has been completed");
+        } else {
+            model.addAttribute("result", "The car is already sold");
+        }
+
+        return "welcome";
+
+
     }
 
 

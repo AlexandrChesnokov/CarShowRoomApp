@@ -336,6 +336,89 @@ public class CarDaoImpl implements CarDao {
  return 0;
     }
 
+    @Override
+    public void orderCar(int userId, int carId, int enhanceId) {
+
+        Connection conn = ConnectionPool.getInstance().getConnection();
+
+        double price = sumPrice(carId, enhanceId);
+
+        System.out.println("Параметры пришли в дао - " +" Юзер ид = " +userId +" Кар ид = " +carId + " Енх ид = " + enhanceId);
+        try {
+
+            PreparedStatement ps = conn
+                    .prepareStatement("insert into orders (user_id, model_id, enhance_id, sum_price) " +
+                            "values (?, ?, ?, ?)");
+
+            ps.setInt(1, userId);
+            ps.setInt(2, carId);
+            ps.setInt(3, enhanceId);
+            ps.setDouble(4, price);
+
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            //ss
+        }
+
+    }
+
+    public double sumPrice(int carId, int enhanceId) {
+
+        Connection conn = ConnectionPool.getInstance().getConnection();
+        double price = 0;
+        try {
+
+            PreparedStatement ps = conn.prepareStatement("select car.price + enh.price from models car, enhance enh where car.id = ? and enh.id = ?");
+
+            ps.setInt(1, carId);
+            ps.setInt(2, enhanceId);
+
+            ResultSet rs = ps.executeQuery();
 
 
+            if (rs.next()) {
+                price = rs.getDouble(1);
+            }
+            return price;
+        } catch (SQLException e) {
+            //s
+        }
+
+        System.out.println("Сум прайс вернул = " + price);
+        return price;
+
+    }
+
+    @Override
+    public boolean isAvailable(int carId) {
+        Connection conn = ConnectionPool.getInstance().getConnection();
+
+        try {
+            PreparedStatement ps = conn.prepareStatement("select case when exists(select model_id from orders where model_id = ?)\n" +
+                    "then 'true' else 'false' end;");
+
+            ps.setInt(1, carId);
+
+            ResultSet rs = ps.executeQuery();
+
+            String result = "";
+
+            if (rs.next()) {
+                result = rs.getString(1);
+            }
+
+            if (result.equals("true")) {
+                return false;
+            } else {
+                return true;
+            }
+
+        } catch (SQLException e) {
+            //ss
+        }
+
+        return false;
+    }
 }
+

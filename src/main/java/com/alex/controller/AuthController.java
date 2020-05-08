@@ -6,6 +6,8 @@ import com.alex.service.SecurityService;
 import com.alex.service.UserService;
 import com.alex.util.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -40,10 +42,6 @@ public class AuthController {
         }
         userService.save(user);
 
-        System.out.println(user.getEmail() + " " + user.getPassword());
-
-
-
         return "redirect:/welcome";
     }
 
@@ -54,6 +52,8 @@ public class AuthController {
         if (Boolean.TRUE.equals(error)) {
             model.addAttribute("error", true);
         }
+
+
         return "sign_in";
     }
 }

@@ -25,5 +25,9 @@ public interface CarService {
 
     void addCar(Car car);
 
+    void orderCar(int userId, int carId, int enhanceId);
+
+    boolean isAvailable(int id);
+
 
 }

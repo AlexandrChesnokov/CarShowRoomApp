@@ -28,6 +28,10 @@ public interface CarDao {
 
     int findMakerId(String name);
 
+    void orderCar(int userId, int carId, int enhanceId);
+
+    boolean isAvailable(int carId);
+
 
 
 

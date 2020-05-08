@@ -72,4 +72,14 @@ public class CarServiceImpl implements CarService {
     public void addCar(Car car) {
         carDao.addCar(car);
     }
+
+    @Override
+    public void orderCar(int userId, int carId, int enhanceId) {
+        carDao.orderCar(userId, carId, enhanceId);
+    }
+
+    @Override
+    public boolean isAvailable(int id) {
+        return carDao.isAvailable(id);
+    }
 }
