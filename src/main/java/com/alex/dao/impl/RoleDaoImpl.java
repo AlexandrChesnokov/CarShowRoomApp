@@ -1,6 +1,7 @@
 package com.alex.dao.impl;
 
 
+import com.alex.dao.ConnectionPool;
 import com.alex.dao.RoleDao;
 import com.alex.dao.UserDao;
 import com.alex.model.Role;
@@ -15,35 +16,8 @@ import java.util.Properties;
 @Component
 public class RoleDaoImpl implements RoleDao {
 
-    private static Connection conn;
-
-    static {
-        String url = null;
-        String username = null;
-        String password = null;
-
-        // load db properties
-        try (InputStream in = UserDao.class
-                .getClassLoader().getResourceAsStream("persistence.properties")) {
-            Properties properties = new Properties();
-            properties.load(in);
-            url = properties.getProperty("url");
-            username = properties.getProperty("user");
-            password = properties.getProperty("password");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // acquire db connection
-        try {
-            Class.forName("org.postgresql.Driver");
-            conn = DriverManager.getConnection(url, username, password);
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public Role getOne(int id) {
+    public Role getOne(int id) throws SQLException {
+        Connection conn = ConnectionPool.getInstance().getConnection();
         try {
             PreparedStatement ps = conn.prepareStatement(
                     "select * from roles where id = ?"
@@ -54,11 +28,12 @@ public class RoleDaoImpl implements RoleDao {
                Role role = new Role();
                role.setId(id);
                 role.setName(rs.getString(2));
-
+                conn.close();
                 return role;
             }
         } catch (SQLException ignored) {
         }
+        conn.close();
         return null;
     }
 }

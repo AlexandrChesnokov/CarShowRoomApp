@@ -84,14 +84,33 @@ public class CarController {
     public String editCar(@ModelAttribute Car car,
                           @RequestParam int id) {
       car.setId(id);
-        System.out.println("<<<<< CAR ID " + car.getId());
-        System.out.println("<<<<< CAR price " + car.getPrice());
-        System.out.println("<<<<< CAR hp " + car.getHp());
+
       carService.editCarByParams(car);
-      return "cars";
+      return "welcome";
     }
 
+    @GetMapping("deleteCar")
+    public String deleteCar(Model model, @RequestParam(value = "id") int id) {
+        carService.deleteCarById(id);
+        return "welcome";
+    }
 
+    @GetMapping("/searchCars")
+    public String searchCars() {
+        return "searchCars";
+    }
+
+    @GetMapping("/addCar")
+    public String addCar(Model model) {
+        model.addAttribute("car", new Car());
+        return "addCar";
+    }
+
+    @PostMapping("/addCar")
+    public String addCar(@ModelAttribute Car car, Model model) {
+        carService.addCar(car);
+        return "welcome";
+    }
 
 
 }

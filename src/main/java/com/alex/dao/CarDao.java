@@ -18,6 +18,16 @@ public interface CarDao {
 
     void editCarByParams(Car car);
 
+    void deleteCarById(int id);
+
+    void addCar(Car car);
+
+    void addCarMaker(String name);
+
+    boolean makerIsPresent(String name) throws SQLException;
+
+    int findMakerId(String name);
+
 
 
 

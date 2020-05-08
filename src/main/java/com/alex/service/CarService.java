@@ -21,5 +21,9 @@ public interface CarService {
 
     void editCarByParams(Car car);
 
+    void deleteCarById(int id);
+
+    void addCar(Car car);
+
 
 }

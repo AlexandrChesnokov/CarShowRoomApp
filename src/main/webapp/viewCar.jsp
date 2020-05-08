@@ -35,12 +35,14 @@
         </tr>
 
 
-   
+
 </table>
 <security:authorize access="hasAuthority('ADMIN')">
     <a id="" href="/editCar?id=${car.id}">Edit</a>
 
-    <a id="" href="/cars">Delete</a>
+    <a id="" onclick="confirm('Are you sure?')" href="/deleteCar?id=${car.id}">Delete</a>
+
+
 </security:authorize>
 
 <script>

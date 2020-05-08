@@ -69,4 +69,17 @@ public class Car {
     public void setHp(int hp) {
         this.hp = hp;
     }
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", maker_name='" + maker_name + '\'' +
+                ", price=" + price +
+                ", color='" + color + '\'' +
+                ", year='" + year + '\'' +
+                ", hp=" + hp +
+                '}';
+    }
 }

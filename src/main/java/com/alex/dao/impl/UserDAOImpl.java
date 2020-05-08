@@ -1,5 +1,6 @@
 package com.alex.dao.impl;
 
+import com.alex.dao.ConnectionPool;
 import com.alex.dao.UserDao;
 import com.alex.model.Role;
 import com.alex.model.User;
@@ -14,37 +15,9 @@ import java.util.*;
 @Component
 public class UserDAOImpl implements UserDao {
 
-    private static Connection conn;
-
-
-
-    static {
-        String url = null;
-        String username = null;
-        String password = null;
-
-        // load db properties
-        try (InputStream in = UserDao.class
-                .getClassLoader().getResourceAsStream("persistence.properties")) {
-            Properties properties = new Properties();
-            properties.load(in);
-            url = properties.getProperty("url");
-            username = properties.getProperty("user");
-            password = properties.getProperty("password");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // acquire db connection
-        try {
-            Class.forName("org.postgresql.Driver");
-            conn = DriverManager.getConnection(url, username, password);
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
     @Override
     public List<User> getAll() {
+        Connection conn = ConnectionPool.getInstance().getConnection();
         List<User> users = new ArrayList<>();
         try {
             PreparedStatement ps = conn.prepareStatement("select * from users");
@@ -62,12 +35,18 @@ public class UserDAOImpl implements UserDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return users;
     }
 
 
     @Override
     public User getOne(String email) {
+        Connection conn = ConnectionPool.getInstance().getConnection();
         try {
             PreparedStatement ps = conn.prepareStatement(
                     "select * from users where email = ?"
@@ -79,14 +58,21 @@ public class UserDAOImpl implements UserDao {
                 user.setFirstname(rs.getString(2));
                 user.setLastname(rs.getString(3));
                 user.setEmail(rs.getString(5));
+                conn.close();
                 return user;
             }
         } catch (SQLException ignored) {
+        }
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return null;
     }
     @Override
     public void add(User user) {
+        Connection conn = ConnectionPool.getInstance().getConnection();
         try {
             PreparedStatement ps = conn.prepareStatement("insert into users " +
                     "(firstname, lastname, phone_number, email, manager_id, password)" +
@@ -110,10 +96,16 @@ public class UserDAOImpl implements UserDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public User findByEmail(String email) {
+        Connection conn = ConnectionPool.getInstance().getConnection();
         try {
             PreparedStatement ps = conn.prepareStatement(
                     "select * from users where email = ?"
@@ -129,15 +121,22 @@ public class UserDAOImpl implements UserDao {
                 user.setPassword(rs.getString(7));
                 Set<Role> roleSet = getUserRolesById(user.getId());
                 user.setRoles(roleSet);
+                conn.close();
                 return user;
             }
         } catch (SQLException ignored) {
+        }
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return null;
     }
 
     @Override
     public Set<Role> getUserRolesById(int id) {
+        Connection conn = ConnectionPool.getInstance().getConnection();
         Set<Role> roles = new HashSet<>();
 
         try {
@@ -156,12 +155,17 @@ public class UserDAOImpl implements UserDao {
         } catch (SQLException e) {
             //ss
         }
-
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return roles;
     }
 
     @Override
     public Role getRoleById(int id) {
+        Connection conn = ConnectionPool.getInstance().getConnection();
 
         Role role = new Role();
 
@@ -180,7 +184,11 @@ public class UserDAOImpl implements UserDao {
         } catch (SQLException e) {
             //ss
         }
-
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return role;
     }
 }

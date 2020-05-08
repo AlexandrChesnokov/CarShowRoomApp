@@ -62,4 +62,14 @@ public class CarServiceImpl implements CarService {
     public void editCarByParams(Car car) {
         carDao.editCarByParams(car);
     }
+
+    @Override
+    public void deleteCarById(int id) {
+        carDao.deleteCarById(id);
+    }
+
+    @Override
+    public void addCar(Car car) {
+        carDao.addCar(car);
+    }
 }

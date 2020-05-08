@@ -11,6 +11,17 @@
 <head>
 
     <title>Welcome</title>
+
+  <style>
+    .btn {
+      display: inline-block; /* Строчно-блочный элемент */
+      background: #8C959D; /* Серый цвет фона */
+      color: #fff; /* Белый цвет текста */
+      padding: 1rem 1.5rem; /* Поля вокруг текста */
+      text-decoration: none; /* Убираем подчёркивание */
+      border-radius: 3px; /* Скругляем уголки */
+    }
+  </style>
 </head>
 <body>
   <c:if test="${pageContext.request.userPrincipal.name != null}">
@@ -22,7 +33,7 @@
     </a> </h2>
   </c:if>
 
-  <a href="/searchCars.jsp">quick search</a>
+  <a href="/searchCars" class="btn">Quick search</a>
 
   <form id="showCars" action="" method="get">
 <input name="cars" type="submit" formaction="/cars" value="Show all cars" formmethod="get"/>

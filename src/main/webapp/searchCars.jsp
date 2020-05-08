@@ -62,6 +62,8 @@
     <input type="button" name="button" onclick="searchInfo()" value="search">
 </form>
 
+<a id="" href="/addCar">Add car</a>
+
 <form name="paramsForm">
     <h2>Year</h2>
   from:  <select name="fromYear">

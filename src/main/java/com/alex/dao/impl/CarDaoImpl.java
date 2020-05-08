@@ -7,6 +7,7 @@ import com.alex.model.Car;
 import com.alex.model.Parameters;
 import com.alex.model.Role;
 import com.alex.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
@@ -22,9 +23,6 @@ import java.util.Set;
 
 @Component
 public class CarDaoImpl implements CarDao {
-
-
-
 
 
     @Override
@@ -62,16 +60,13 @@ public class CarDaoImpl implements CarDao {
         if (parameters.getFromYearParam().equals(""))
             parameters.setFromYearParam("1945-01-22");
         else
-            parameters.setFromYearParam(""+parameters.getFromYearParam()+"-01-01");
+            parameters.setFromYearParam("" + parameters.getFromYearParam() + "-01-01");
         if (parameters.getToYearParam().equals(""))
             parameters.setToYearParam("2045-01-01");
         else
-            parameters.setToYearParam(""+parameters.getToYearParam()+"-01-01");
+            parameters.setToYearParam("" + parameters.getToYearParam() + "-01-01");
         if (parameters.getColorNameParam().equals(""))
             parameters.setColorNameParam("%");
-
-
-
 
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -79,9 +74,7 @@ public class CarDaoImpl implements CarDao {
         LocalDate toY = LocalDate.parse(parameters.getToYearParam(), formatter);
 
 
-
         System.out.println(fromY + " " + toY);
-
 
 
         List<Car> cars = new ArrayList<>();
@@ -100,7 +93,6 @@ public class CarDaoImpl implements CarDao {
             ps.setDouble(5, parameters.getFromHpParam());
             ps.setDouble(6, parameters.getToHpParam());
             ps.setString(7, parameters.getColorNameParam());
-
 
 
             ResultSet rs = ps.executeQuery();
@@ -122,8 +114,6 @@ public class CarDaoImpl implements CarDao {
 
         conn.close();
         return cars;
-
-
 
 
     }
@@ -178,6 +168,7 @@ public class CarDaoImpl implements CarDao {
                 car.setYear(rs.getString(6));
                 car.setHp(rs.getInt(7));
                 car.setMaker_name(rs.getString(8));
+                conn.close();
                 return car;
             }
         } catch (SQLException ignored) {
@@ -190,19 +181,12 @@ public class CarDaoImpl implements CarDao {
     public void editCarByParams(Car car) {
         Connection conn = ConnectionPool.getInstance().getConnection();
 
-
-
-
-
-
         try {
             PreparedStatement ps = conn.prepareStatement(
                     "update models set price = ?, color = ?, hp = ?" +
                             "where id = ?;"
             );
 
-            System.out.println("CARDAO START");
-            System.out.println(car.getPrice() + " " + car.getColor() + " " + car.getHp());
             ps.setDouble(1, car.getPrice());
             ps.setString(2, car.getColor());
             ps.setInt(3, car.getHp());
@@ -213,7 +197,142 @@ public class CarDaoImpl implements CarDao {
 
         } catch (SQLException ignored) {
         }
+    }
 
+    @Override
+    public void deleteCarById(int id) {
+
+        Connection conn = ConnectionPool.getInstance().getConnection();
+
+        try {
+            PreparedStatement ps = conn.prepareStatement(
+                    "delete from models where id = ?;"
+            );
+
+            ps.setInt(1, id);
+            ps.executeUpdate();
+
+            conn.close();
+
+        } catch (SQLException ignored) {
+        }
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void addCar(Car car) {
+        Connection conn = ConnectionPool.getInstance().getConnection();
+        car.setYear(car.getYear() + "-01-01");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate yearIssue = LocalDate.parse(car.getYear(), formatter);
+
+        boolean isPresent = makerIsPresent(car.getMaker_name());
+
+        System.out.println("1 -" + car.toString());
+
+        try {
+
+            if (!isPresent)
+                addCarMaker(car.getMaker_name());
+
+            int id = findMakerId(car.getMaker_name());
+            PreparedStatement ps =
+                    conn.prepareStatement("insert into models (name, maker_id, price, color, yearissue, hp) " +
+                            "values (?, ?, ?, ?, ?, ?)");
+
+            System.out.println("4 -" + car.toString());
+
+            ps.setString(1, car.getName());
+            ps.setInt(2, id);
+            ps.setDouble(3, car.getPrice());
+            ps.setString(4, car.getColor());
+            ps.setDate(5, java.sql.Date.valueOf(yearIssue));
+            ps.setInt(6, car.getHp());
+            ps.executeUpdate();
+            conn.close();
+
+
+
+        } catch (SQLException ignored) {
+        }
+        try {
+            conn.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public boolean makerIsPresent(String name) {
+
+        Connection conn = ConnectionPool.getInstance().getConnection();
+
+        try {
+            PreparedStatement psCheckMaker = conn.prepareStatement(
+                    "select case when exists(select name from makers\n" +
+                            "    where name = ?) then 'present' else 'missing' end;"
+            );
+
+            psCheckMaker.setString(1, name);
+
+            ResultSet rs = psCheckMaker.executeQuery();
+            String result = "";
+            if (rs.next()) {
+                result = rs.getString(1);
+            }
+
+            return result.equals("present");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public void addCarMaker(String name) {
+
+        Connection conn = ConnectionPool.getInstance().getConnection();
+
+        try {
+            PreparedStatement psAddMaker =
+                    conn.prepareStatement("insert into makers (name) values (?);");
+            psAddMaker.setString(1, name);
+            psAddMaker.executeUpdate();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public int findMakerId(String name) {
+        Connection conn3 = ConnectionPool.getInstance().getConnection();
+        try {
+            PreparedStatement psFindMakerId = conn3.prepareStatement("select id from makers where name = ?");
+
+            psFindMakerId.setString(1, name);
+
+            ResultSet rsMakerId = psFindMakerId.executeQuery();
+            int id = 0;
+            if (rsMakerId.next()) {
+                id = rsMakerId.getInt(1);
+            }
+            return id;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+ return 0;
     }
 }
-
