@@ -252,9 +252,10 @@ public class UserDAOImpl implements UserDao {
                 role.setId(rs.getInt(8));
                 role.setName(rs.getString(9));
                 user.setRole(role);
+                return user;
             }
 
-            return user;
+
 
 
 

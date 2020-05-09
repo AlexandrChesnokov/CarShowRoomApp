@@ -66,10 +66,14 @@
 
         var emailRGEX = /^[-a-z0-9!#$%&'*+/=?^_`{|}~ ]+(?:\.[-a-z0-9!#$%&'*+/=?^_`{|}~]+)*@(?:[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?\.)*(?:aero|arpa|asia|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel|[a-z][a-z])$/i;
         var phoneRGEX = /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/i;
+        var nameRGEX = /^([А-Я]{1}[а-яё]{1,23}|[A-Z]{1}[a-z]{1,23})$/i;
         var phoneResult = phoneRGEX.test(phone_number.value);
         var emailResult = emailRGEX.test(email.value);
+        var fnameResult = nameRGEX.test(firstname.value);
+        var lnameResult = nameRGEX.test(lastname.value);
 
-        if (!firstname.value || firstname.value.length < 1 || firstname.value.length > 16) {
+
+        if (fnameResult === false) {
             firstname.style.border = "2px solid red";
 
 
@@ -78,7 +82,7 @@
             firstname.style.border = "";
         }
 
-        if (!lastname.value || lastname.value.length < 1 || lastname.value.length > 16) {
+        if (lnameResult === false) {
             lastname.style.border = "2px solid red";
             return false;
         } else {

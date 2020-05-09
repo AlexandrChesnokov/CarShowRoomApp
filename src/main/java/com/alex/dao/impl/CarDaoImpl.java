@@ -399,15 +399,11 @@ public class CarDaoImpl implements CarDao {
                     "then 'true' else 'false' end;");
 
             ps.setInt(1, carId);
-
             ResultSet rs = ps.executeQuery();
-
             String result = "";
-
             if (rs.next()) {
                 result = rs.getString(1);
             }
-
             if (result.equals("true")) {
                 return false;
             } else {
@@ -415,7 +411,7 @@ public class CarDaoImpl implements CarDao {
             }
 
         } catch (SQLException e) {
-            //ss
+           //TODO: dobavit' logger i finally
         }
 
         return false;
