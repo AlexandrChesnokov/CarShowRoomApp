@@ -1,5 +1,7 @@
 package com.alex.util;
 
+import com.alex.dto.CarDto;
+import com.alex.dto.CarEditFormDto;
 import com.alex.dto.ParametersDto;
 import com.alex.dto.SignUpRequestDto;
 import com.alex.model.Parameters;
@@ -44,31 +46,19 @@ public class RestValidator {
 
     public String registerFormValidate(SignUpRequestDto requestDto) {
 
-        Pattern emailPattern = Pattern.compile(EMAIL_REGEXP);
-        Matcher emailMatcher = emailPattern.matcher(requestDto.getEmail());
-
-        if (!emailMatcher.matches()) {
+        if (!IsCorrectValue(requestDto.getEmail(), EMAIL_REGEXP)) {
             return "invalid email format";
         }
 
-        Pattern phonePattern = Pattern.compile(PHONE_REGEX);
-        Matcher phoneMatcher = phonePattern.matcher(requestDto.getPhone_number());
-
-        if (!phoneMatcher.matches()) {
+        if (!IsCorrectValue(requestDto.getPhone_number(), PHONE_REGEX)) {
             return "invalid phone format";
         }
 
-        Pattern fnamePattern = Pattern.compile(NAME_REGEX);
-        Matcher fnameMatcher = fnamePattern.matcher(requestDto.getFirstname());
-
-        if (!fnameMatcher.matches()) {
+        if (!IsCorrectValue(requestDto.getFirstname(), NAME_REGEX)) {
             return "firstname invalid format";
         }
 
-        Pattern lnamePattern = Pattern.compile(NAME_REGEX);
-        Matcher lnameMatcher = lnamePattern.matcher(requestDto.getLastname());
-
-        if (!lnameMatcher.matches()) {
+        if (!IsCorrectValue(requestDto.getLastname(), NAME_REGEX)) {
             return "lastname invalid format";
         }
 
@@ -111,12 +101,48 @@ public class RestValidator {
                 !IsCorrectValue(prm.getToHpParam(), HORSEPOWER_REGEX)) {
             return "incorrect hp value";
         }
-
         return STATUS_OK;
-
-
     }
 
+
+    public boolean newCarValidate(CarDto carDto) {
+
+        if (!IsCorrectValue(carDto.getPrice(), PRICE_REGEX)) {
+            return false;
+        }
+
+        if (!IsCorrectValue(carDto.getHp(), HORSEPOWER_REGEX)) {
+            return false;
+        }
+
+        if (!IsColorPresent(carDto.getColor())) {
+            return false;
+        }
+
+        if (!IsCorrectValue(carDto.getYear(), CAR_YEAR_REGEX)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean editFormValidate(CarEditFormDto carEditFormDto) {
+
+        if (!IsColorPresent(carEditFormDto.getColor())) {
+            return false;
+        }
+
+        if (!IsCorrectValue(carEditFormDto.getPrice(), PRICE_REGEX)) {
+            return false;
+        }
+
+        if (!IsCorrectValue(carEditFormDto.getHp(), HORSEPOWER_REGEX)) {
+            return false;
+        }
+
+        return true;
+
+    }
 
 
     private boolean IsCorrectValue(String value, String regex) {
