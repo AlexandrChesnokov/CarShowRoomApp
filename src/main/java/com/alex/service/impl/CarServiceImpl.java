@@ -59,23 +59,23 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public void editCarByParams(Car car) {
-        carDao.editCarByParams(car);
+    public boolean editCarByParams(Car car) {
+       return carDao.editCarByParams(car);
     }
 
     @Override
-    public void deleteCarById(int id) {
-        carDao.deleteCarById(id);
+    public boolean deleteCarById(int id) {
+       return carDao.deleteCarById(id);
     }
 
     @Override
-    public void addCar(Car car) {
-        carDao.addCar(car);
+    public boolean addCar(Car car) {
+       return carDao.addCar(car);
     }
 
     @Override
-    public void orderCar(int userId, int carId, int enhanceId) {
-        carDao.orderCar(userId, carId, enhanceId);
+    public boolean orderCar(int userId, int carId, int enhanceId) {
+       return carDao.orderCar(userId, carId, enhanceId);
     }
 
     @Override

@@ -10,6 +10,19 @@ public class Parameters {
     double fromHpParam;
     double toHpParam;
 
+    public Parameters() {
+    }
+
+    public Parameters(String fromYearParam, String toYearParam, double fromPriceParam, double toPriceParam, String colorNameParam, double fromHpParam, double toHpParam) {
+        this.fromYearParam = fromYearParam;
+        this.toYearParam = toYearParam;
+        this.fromPriceParam = fromPriceParam;
+        this.toPriceParam = toPriceParam;
+        this.colorNameParam = colorNameParam;
+        this.fromHpParam = fromHpParam;
+        this.toHpParam = toHpParam;
+    }
+
     public String getFromYearParam() {
         return fromYearParam;
     }

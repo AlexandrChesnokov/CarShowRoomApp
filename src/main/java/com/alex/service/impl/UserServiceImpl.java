@@ -35,10 +35,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void save(User user) throws SQLException {
+    public boolean save(User user) throws SQLException {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
        user.setRole(roleDao.getOne(3));
-       userDAO.add(user);
+     return   userDAO.add(user);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void changeRole(User user) {
-        userDAO.changeRole(user);
+    public boolean changeRole(User user) {
+       return userDAO.changeRole(user);
     }
 }

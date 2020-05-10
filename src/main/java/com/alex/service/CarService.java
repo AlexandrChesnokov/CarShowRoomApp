@@ -19,13 +19,13 @@ public interface CarService {
 
     List<Car> findCarByParams(Parameters parameters);
 
-    void editCarByParams(Car car);
+    boolean editCarByParams(Car car);
 
-    void deleteCarById(int id);
+    boolean deleteCarById(int id);
 
-    void addCar(Car car);
+    boolean addCar(Car car);
 
-    void orderCar(int userId, int carId, int enhanceId);
+    boolean orderCar(int userId, int carId, int enhanceId);
 
     boolean isAvailable(int id);
 

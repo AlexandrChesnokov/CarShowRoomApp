@@ -1,9 +1,13 @@
 package com.alex.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * @author Alexandr Chesnokov
  * @project CarShowRoomApp
  */
+
+@JsonIgnoreProperties
 public class SignUpRequestDto {
 
     private String firstname;

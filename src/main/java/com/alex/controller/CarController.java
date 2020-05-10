@@ -98,17 +98,26 @@ public class CarController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
     @PostMapping("/editCar")
     public String editCar(@ModelAttribute Car car,
-                          @RequestParam int id) {
+                          @RequestParam int id,
+                          Model model) {
       car.setId(id);
 
-      carService.editCarByParams(car);
+      if (carService.editCarByParams(car)) {
+          model.addAttribute("result", "Parameters changed successfully");
+        } else {
+          model.addAttribute("result", "Error while changing parameters, possibly incorrect data entered");
+        }
       return "welcome";
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
     @GetMapping("deleteCar")
     public String deleteCar(Model model, @RequestParam(value = "id") int id) {
-        carService.deleteCarById(id);
+        if (carService.deleteCarById(id)) {
+            model.addAttribute("result", "Car successfully deleted");
+        } else {
+            model.addAttribute("result", "Error while deleting a car, possibly incorrect data entered");
+        }
         return "welcome";
     }
 
@@ -128,7 +137,11 @@ public class CarController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
     @PostMapping("/addCar")
     public String addCar(@ModelAttribute Car car, Model model) {
-        carService.addCar(car);
+        if (carService.addCar(car)) {
+            model.addAttribute("result", "Adding a car was successful");
+        } else {
+            model.addAttribute("result", "Error adding car, possibly entered incorrect data");
+        }
         return "welcome";
     }
 

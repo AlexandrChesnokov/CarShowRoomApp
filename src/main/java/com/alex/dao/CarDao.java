@@ -16,19 +16,19 @@ public interface CarDao {
 
     Car findCarById(int id) throws SQLException;
 
-    void editCarByParams(Car car);
+    boolean editCarByParams(Car car);
 
-    void deleteCarById(int id);
+    boolean deleteCarById(int id);
 
-    void addCar(Car car);
+    boolean addCar(Car car);
 
-    void addCarMaker(String name);
+    boolean addCarMaker(String name);
 
     boolean makerIsPresent(String name) throws SQLException;
 
     int findMakerId(String name);
 
-    void orderCar(int userId, int carId, int enhanceId);
+    boolean orderCar(int userId, int carId, int enhanceId);
 
     boolean isAvailable(int carId);
 

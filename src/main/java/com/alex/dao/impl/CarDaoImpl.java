@@ -46,7 +46,7 @@ public class CarDaoImpl implements CarDao {
                 cars.add(car);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace();         //TODO: sdelat' logger i zakritie connection v finally
         }
 
         conn.close();
@@ -109,7 +109,7 @@ public class CarDaoImpl implements CarDao {
                 cars.add(car);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace();            //TODO: sdelat' logger i zakritie connection v finally
         }
 
         conn.close();
@@ -142,7 +142,7 @@ public class CarDaoImpl implements CarDao {
                 System.out.println(car.getName());
                 cars.add(car);
             }
-        } catch (SQLException ignored) {
+        } catch (SQLException ignored) {              //TODO: sdelat' logger i zakritie connection v finally
         }
         conn.close();
         return cars;
@@ -171,14 +171,14 @@ public class CarDaoImpl implements CarDao {
                 conn.close();
                 return car;
             }
-        } catch (SQLException ignored) {
+        } catch (SQLException ignored) {          //TODO: sdelat' logger i zakritie connection v finally
         }
         conn.close();
         return null;
     }
 
     @Override
-    public void editCarByParams(Car car) {
+    public boolean editCarByParams(Car car) {
         Connection conn = ConnectionPool.getInstance().getConnection();
 
         try {
@@ -194,13 +194,20 @@ public class CarDaoImpl implements CarDao {
             ps.executeUpdate();
 
             conn.close();
+            return true;
 
         } catch (SQLException ignored) {
+            try {
+                conn.close();
+            } catch (SQLException e) {                   //TODO: sdelat' logger i zakritie connection v finally
+                e.printStackTrace();
+            }
+            return false;
         }
     }
 
     @Override
-    public void deleteCarById(int id) {
+    public boolean deleteCarById(int id) {
 
         Connection conn = ConnectionPool.getInstance().getConnection();
 
@@ -213,18 +220,21 @@ public class CarDaoImpl implements CarDao {
             ps.executeUpdate();
 
             conn.close();
+            return true;
 
         } catch (SQLException ignored) {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }                                //TODO: sdelat' logger i zakritie connection v finally
+            return false;
         }
-        try {
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
     }
 
     @Override
-    public void addCar(Car car) {
+    public boolean addCar(Car car) {
         Connection conn = ConnectionPool.getInstance().getConnection();
         car.setYear(car.getYear() + "-01-01");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -254,17 +264,14 @@ public class CarDaoImpl implements CarDao {
             ps.setInt(6, car.getHp());
             ps.executeUpdate();
             conn.close();
+            return true;
 
 
 
         } catch (SQLException ignored) {
-        }
-        try {
-            conn.close();
+            return false;
+        }                                   //TODO: sdelat' logger i zakritie connection v finally
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -288,14 +295,14 @@ public class CarDaoImpl implements CarDao {
 
             return result.equals("present");
 
-        } catch (SQLException e) {
+        } catch (SQLException e) {            //TODO: sdelat' logger i zakritie connection v finally
             e.printStackTrace();
         }
         return false;
     }
 
     @Override
-    public void addCarMaker(String name) {
+    public boolean addCarMaker(String name) {
 
         Connection conn = ConnectionPool.getInstance().getConnection();
 
@@ -305,14 +312,18 @@ public class CarDaoImpl implements CarDao {
             psAddMaker.setString(1, name);
             psAddMaker.executeUpdate();
             conn.close();
+            return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            try {
+                conn.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            return false;
         }
-        try {
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
+                    //TODO: sdelat' logger i zakritie connection v finally
+
     }
 
     @Override
@@ -331,13 +342,13 @@ public class CarDaoImpl implements CarDao {
             return id;
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+        }                                  //TODO: sdelat' logger i zakritie connection v finally
 
  return 0;
     }
 
     @Override
-    public void orderCar(int userId, int carId, int enhanceId) {
+    public boolean orderCar(int userId, int carId, int enhanceId) {
 
         Connection conn = ConnectionPool.getInstance().getConnection();
 
@@ -356,9 +367,16 @@ public class CarDaoImpl implements CarDao {
             ps.setDouble(4, price);
 
             ps.executeUpdate();
+            conn.close();
+            return true;
 
         } catch (SQLException e) {
-            //ss
+            try {
+                conn.close();
+            } catch (SQLException ex) {           //TODO: sdelat' logger i zakritie connection v finally
+                ex.printStackTrace();
+            }
+            return false;
         }
 
     }
@@ -381,7 +399,7 @@ public class CarDaoImpl implements CarDao {
                 price = rs.getDouble(1);
             }
             return price;
-        } catch (SQLException e) {
+        } catch (SQLException e) {              //TODO: sdelat' logger i zakritie connection v finally
             //s
         }
 
@@ -411,7 +429,7 @@ public class CarDaoImpl implements CarDao {
             }
 
         } catch (SQLException e) {
-           //TODO: dobavit' logger i finally
+            //TODO: sdelat' logger i zakritie connection v finally
         }
 
         return false;

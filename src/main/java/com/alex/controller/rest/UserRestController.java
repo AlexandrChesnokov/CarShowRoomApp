@@ -1,15 +1,20 @@
 package com.alex.controller.rest;
 
+import com.alex.dto.ParametersDto;
 import com.alex.dto.UserDto;
+import com.alex.model.Car;
+import com.alex.model.Parameters;
 import com.alex.model.User;
+import com.alex.service.CarService;
 import com.alex.service.UserService;
+import com.alex.util.RestValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author Alexandr Chesnokov
@@ -17,27 +22,51 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
-@RequestMapping(value = "/api/v1/users/")
+@RequestMapping(value = "/api/")
 public class UserRestController {
 
     @Autowired
     private UserService userService;
 
+    @Autowired
+    CarService carService;
 
-    @GetMapping(value = "{id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable(name = "id") int id) {
+    @Autowired
+    RestValidator validator;
 
-        User user = userService.findUserById(id);
 
-        System.out.println(user == null);
+    @GetMapping("/cars")
+    public ResponseEntity<List<Car>> getCars() {
 
-        if (user == null) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(carService.showAllCars(), HttpStatus.OK);
+    }
+
+    @GetMapping("/cars/{maker}")
+    public ResponseEntity<List<Car>> getCarsByMaker(@PathVariable(name = "maker") String maker) {
+
+        List<Car> cars = carService.findCarByMaker(maker);
+        if (!cars.isEmpty()) {
+            return new ResponseEntity<>(carService.findCarByMaker(maker), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(carService.findCarByMaker(maker), HttpStatus.NO_CONTENT);
+        }
+    }
+
+    @PostMapping(value = "/cars/adv-search", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> searchCars(@RequestBody ParametersDto prm) {
+
+        String validateResult = validator.carParamsValidate(prm);
+        if (!validateResult.equals("ok")) {
+            return new ResponseEntity<>(validateResult, HttpStatus.BAD_REQUEST);
         }
 
-        UserDto result = UserDto.fromUser(user);
+        List<Car> cars = carService.findCarByParams(prm.toParameters());
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        if (cars.isEmpty()) {
+            return new ResponseEntity<>(carService.findCarByParams(prm.toParameters()), HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(carService.findCarByParams(prm.toParameters()), HttpStatus.OK);
 
     }
+
 }

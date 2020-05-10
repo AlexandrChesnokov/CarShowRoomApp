@@ -77,7 +77,7 @@ public class UserDAOImpl implements UserDao {
         return null;
     }
     @Override
-    public void add(User user) {
+    public boolean add(User user) {
         Connection conn = ConnectionPool.getInstance().getConnection();
         try {
             PreparedStatement ps = conn.prepareStatement("insert into users " +
@@ -99,14 +99,16 @@ public class UserDAOImpl implements UserDao {
 
             ps.executeUpdate();
             ps2.executeUpdate();
+            return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            try {
+                conn.close();
+            } catch (SQLException a) {
+                a.printStackTrace();
+            }
+           return false;
         }
-        try {
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
     }
 
     @Override
@@ -202,7 +204,7 @@ public class UserDAOImpl implements UserDao {
     }
 
     @Override
-    public void changeRole(User user) {
+    public boolean changeRole(User user) {
 
         Connection conn = ConnectionPool.getInstance().getConnection();
 
@@ -215,16 +217,18 @@ public class UserDAOImpl implements UserDao {
             ps.setString(1, user.getRole().getName());
             ps.setInt(2, user.getId());
             ps.executeUpdate();
-            conn.close();
 
-        } catch (SQLException e) {
-            //ss
-        }
-        try {
             conn.close();
+            return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            try {
+                conn.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            return false;
         }
+
     }
 
     @Override
@@ -254,13 +258,6 @@ public class UserDAOImpl implements UserDao {
                 user.setRole(role);
                 return user;
             }
-
-
-
-
-
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         }

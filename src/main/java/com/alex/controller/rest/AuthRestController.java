@@ -2,11 +2,10 @@ package com.alex.controller.rest;
 
 import com.alex.dto.AuthRequestDto;
 import com.alex.dto.SignUpRequestDto;
-import com.alex.dto.UserDto;
 import com.alex.model.User;
 import com.alex.security.jwt.JwtTokenProvider;
 import com.alex.service.UserService;
-import com.alex.util.RestSignUpValidator;
+import com.alex.util.RestValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -41,7 +40,7 @@ public class AuthRestController {
     UserService userService;
 
     @Autowired
-    RestSignUpValidator validator;
+    RestValidator validator;
 
 
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -75,7 +74,7 @@ public class AuthRestController {
 
         String validateResult = "";
 
-        validateResult = validator.validate(requestDto);
+        validateResult = validator.registerFormValidate(requestDto);
 
         if (!validateResult.equals("ok")) {
             return new ResponseEntity<>(validateResult, HttpStatus.BAD_REQUEST);

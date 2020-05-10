@@ -13,7 +13,7 @@ public interface UserDao {
 
     User getOne(String email) throws SQLException;
 
-    void add(User user) throws SQLException;
+    boolean add(User user) throws SQLException;
 
     User findByEmail(String email);
 
@@ -23,5 +23,5 @@ public interface UserDao {
 
     User findUserById(int id);
 
-    void changeRole(User user);
+    boolean changeRole(User user);
 }

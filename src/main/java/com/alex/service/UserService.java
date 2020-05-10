@@ -12,12 +12,12 @@ public interface UserService {
 
     List<User> showAll() throws SQLException;
 
-    void save(User user) throws SQLException;
+    boolean save(User user) throws SQLException;
 
     User findByEmail(String email);
 
     User findUserById(int id);
 
-    void changeRole(User user);
+    boolean changeRole(User user);
 
 }

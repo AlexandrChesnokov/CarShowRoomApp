@@ -1,15 +1,14 @@
 package com.alex.controller.rest;
 
 import com.alex.dto.UserDto;
+import com.alex.model.Role;
 import com.alex.model.User;
 import com.alex.service.UserService;
+import com.alex.util.RestValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -25,6 +24,9 @@ public class AdminRestController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    RestValidator validator;
 
 
     @GetMapping(value = "users/{id}")
@@ -44,6 +46,7 @@ public class AdminRestController {
 
     }
 
+
     @GetMapping(value = "/users")
     public ResponseEntity<List<UserDto>> getAllUsers() throws SQLException {
 
@@ -51,4 +54,24 @@ public class AdminRestController {
 
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
+
+    @PutMapping("/change-role/{id}/{role}")
+    public ResponseEntity<Object> changeRole(@PathVariable(name = "id")int id,
+                                             @PathVariable(name = "role")String role) {
+
+        if (!validator.roleNameValidate(role))
+            return new ResponseEntity<>("role does not exist", HttpStatus.BAD_REQUEST);
+
+        User user = new User();
+        Role userRole = new Role();
+        userRole.setName(role);
+        user.setId(id);
+        user.setRole(userRole);
+
+        userService.changeRole(user);
+
+        return new ResponseEntity<>("role changed successfully", HttpStatus.OK);
+    }
+
+
 }
