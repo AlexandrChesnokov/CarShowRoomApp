@@ -5,6 +5,7 @@ import com.alex.dto.UserDto;
 import com.alex.model.Car;
 import com.alex.model.Parameters;
 import com.alex.model.User;
+import com.alex.security.jwt.JwtTokenProvider;
 import com.alex.service.CarService;
 import com.alex.service.UserService;
 import com.alex.util.RestValidator;
@@ -12,8 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.GsonBuilderUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -34,6 +39,8 @@ public class UserRestController {
     @Autowired
     RestValidator validator;
 
+    @Autowired
+    JwtTokenProvider jwtTokenProvider;
 
     @GetMapping("/cars")
     public ResponseEntity<List<Car>> getCars() {
@@ -67,6 +74,23 @@ public class UserRestController {
         }
         return new ResponseEntity<>(carService.findCarByParams(prm.toParameters()), HttpStatus.OK);
 
+    }
+
+    @GetMapping("/cars/to-order/{carId}/{enhId}")
+    public ResponseEntity<Object> toOrder(@PathVariable(name = "carId") int carId,
+                                          @PathVariable(name = "enhId") int enhId,
+                                          HttpServletRequest req) {
+
+
+        String userEmail = jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req));
+        User user = userService.findByEmail(userEmail);
+
+        if (!carService.isAvailable(carId)) {
+           return new ResponseEntity<>("The car is already sold", HttpStatus.NO_CONTENT);
+        }
+
+        carService.orderCar(user.getId(), carId, enhId);
+        return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
     }
 
 }
