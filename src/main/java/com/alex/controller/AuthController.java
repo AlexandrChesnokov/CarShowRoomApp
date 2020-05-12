@@ -2,12 +2,9 @@ package com.alex.controller;
 
 
 import com.alex.model.User;
-import com.alex.service.SecurityService;
 import com.alex.service.UserService;
 import com.alex.util.UserValidator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,17 +13,20 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.sql.SQLException;
 
+@Slf4j
 @Controller
 public class AuthController {
 
-    @Autowired
-    UserValidator userValidator;
 
 
+    private final UserValidator userValidator;
 
-    @Autowired
-    UserService userService;
+    private final UserService userService;
 
+    public AuthController(UserValidator userValidator, UserService userService) {
+        this.userValidator = userValidator;
+        this.userService = userService;
+    }
 
     @GetMapping("/sign_up")
     public String getSignUp(Model model) {
@@ -37,12 +37,15 @@ public class AuthController {
     @PostMapping("/sign_up")
     public String signUp(@Valid @ModelAttribute("user")User user, BindingResult result) throws SQLException {
         userValidator.validate(user, result);
+
         if (result.hasErrors()) {
+            log.info("user failed validation");
             return "sign_up";
         }
+        log.info("user validated");
         userService.save(user);
 
-        return "redirect:/welcome";
+        return "welcome";
     }
 
     @RequestMapping("/login")
@@ -52,8 +55,6 @@ public class AuthController {
         if (Boolean.TRUE.equals(error)) {
             model.addAttribute("error", true);
         }
-
-
         return "sign_in";
     }
 }

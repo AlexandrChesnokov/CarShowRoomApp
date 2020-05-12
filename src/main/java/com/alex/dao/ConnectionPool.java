@@ -1,5 +1,6 @@
 package com.alex.dao;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 
+@Slf4j
 public class ConnectionPool {
 
     private ConnectionPool() {
@@ -34,7 +36,7 @@ public class ConnectionPool {
             DataSource ds = (DataSource)ctx.lookup("jdbc/myDbDS");
             c = ds.getConnection();
         } catch (NamingException | SQLException e) {
-            e.printStackTrace();
+            log.error("Datasource problem");
         }
         return c;
     }

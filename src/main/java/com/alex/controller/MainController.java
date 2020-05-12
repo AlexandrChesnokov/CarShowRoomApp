@@ -3,8 +3,8 @@ package com.alex.controller;
 import com.alex.model.User;
 import com.alex.service.UserService;
 import com.alex.util.RestValidator;
-import com.alex.util.UserValidator;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.alex.util.UserInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -16,22 +16,29 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.SQLException;
 
+
+@Slf4j
 @Controller
 public class MainController {
-    @Autowired
-    UserService userService;
 
-    @Autowired
-    UserValidator userValidator;
+    private final UserService userService;
 
-    @Autowired
-    RestValidator validator;
+    private final UserInfo userInfo;
 
+    private final RestValidator validator;
+
+
+    public MainController(UserService userService, UserInfo userInfo, RestValidator validator) {
+        this.userService = userService;
+        this.userInfo = userInfo;
+        this.validator = validator;
+    }
 
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER', 'MANAGER')")
     @GetMapping("/")
     public String getWelcomePage(Model model) {
+
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         model.addAttribute("firstname", user.getFirstname());
         return "welcome";
@@ -40,6 +47,9 @@ public class MainController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/users")
     public String getUsers(Model model) throws SQLException {
+
+        log.info("Received a request from user {} to show users", userInfo.getUserEmail());
+
         model.addAttribute("users", userService.showAll());
         return "users";
 
@@ -56,6 +66,8 @@ public class MainController {
     public String changeRole(@RequestParam(value = "id") int id,
                              @ModelAttribute User user,
                              Model model) {
+
+        log.info("Received a request from user {} to change user role by id {}", userInfo.getUserEmail(), id);
 
         if (!validator.roleNameValidate(user.getRole().getName())) {
             model.addAttribute("result", "Roles do not exist");

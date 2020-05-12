@@ -11,8 +11,11 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @Configuration
 @EnableWebMvc
 @ComponentScan("com.alex")
-@PropertySource("resources/application.properties")
+@PropertySource("classpath:/application.properties")
+@PropertySource("classpath:/log4j.properties")
 public class WebConfig implements WebMvcConfigurer {
+
+
 
     @Bean
     public InternalResourceViewResolver viewResolver() {
@@ -20,11 +23,11 @@ public class WebConfig implements WebMvcConfigurer {
         viewResolver.setSuffix(".jsp");
         viewResolver.setContentType("text/html;charset=UTF-8");
         viewResolver.setCache(false);
-        viewResolver.setPrefix("/");
+        viewResolver.setPrefix("/pages/");
         return viewResolver;
 
     }
 
-
-
 }
+
+

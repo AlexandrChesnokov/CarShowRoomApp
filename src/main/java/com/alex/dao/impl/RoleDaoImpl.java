@@ -6,6 +6,7 @@ import com.alex.dao.RoleDao;
 import com.alex.dao.UserDao;
 import com.alex.model.Role;
 import com.alex.model.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -13,12 +14,13 @@ import java.io.InputStream;
 import java.sql.*;
 import java.util.Properties;
 
+@Slf4j
 @Component
 public class RoleDaoImpl implements RoleDao {
 
-    public Role getOne(int id) throws SQLException {
-        Connection conn = ConnectionPool.getInstance().getConnection();
-        try {
+    public Role getOne(int id) {
+
+        try  (Connection conn = ConnectionPool.getInstance().getConnection()){
             PreparedStatement ps = conn.prepareStatement(
                     "select * from roles where id = ?"
             );
@@ -28,12 +30,13 @@ public class RoleDaoImpl implements RoleDao {
                Role role = new Role();
                role.setId(id);
                 role.setName(rs.getString(2));
-                conn.close();
+                ;
                 return role;
             }
-        } catch (SQLException ignored) {
+        } catch (SQLException e) {
+            log.error("SQLException in getOne", e);
         }
-        conn.close();
+
         return null;
     }
 }
