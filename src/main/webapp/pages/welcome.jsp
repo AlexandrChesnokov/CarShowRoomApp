@@ -2,7 +2,7 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%--
   Created by IntelliJ IDEA.
-  User: lohpi
+  User: Alexandr Chesnokov
   Date: 04.05.2020
   Time: 15:30
   To change this template use File | Settings | File Templates.

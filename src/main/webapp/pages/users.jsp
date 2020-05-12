@@ -2,7 +2,7 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="com.alex.model.User" %><%--
   Created by IntelliJ IDEA.
-  User: lohpi
+  User: Alexandr Chesnokov
   Date: 13.04.2020
   Time: 0:02
   To change this template use File | Settings | File Templates.
