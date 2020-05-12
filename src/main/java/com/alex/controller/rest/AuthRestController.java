@@ -6,6 +6,8 @@ import com.alex.model.User;
 import com.alex.security.jwt.JwtTokenProvider;
 import com.alex.service.UserService;
 import com.alex.util.RestValidator;
+import com.alex.util.UserInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,27 +27,36 @@ import java.util.Map;
  * @author Alexandr Chesnokov
  * @project CarShowRoomApp
  */
+@Slf4j
 @RestController
 @RequestMapping("/api")
 public class AuthRestController {
 
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    @Autowired
-    UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    RestValidator validator;
+    private final RestValidator validator;
+
+    private final UserInfo userInfo;
+
+    public AuthRestController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UserService userService, RestValidator validator, UserInfo userInfo) {
+        this.authenticationManager = authenticationManager;
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.userService = userService;
+        this.validator = validator;
+        this.userInfo = userInfo;
+    }
 
 
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Map<Object, Object>> login(@RequestBody AuthRequestDto requestDto) {
+
+        log.info("IN REST: Received a request from user {} to login", requestDto.getEmail());
 
         try {
             String email = requestDto.getEmail();
@@ -62,8 +73,11 @@ public class AuthRestController {
             response.put("email", email);
             response.put("token", token);
 
+            log.debug("IN REST: User {} passed validation and received a token", requestDto.getEmail());
+
             return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
+            log.debug("IN REST: User {} didn't pass validation", requestDto.getEmail());
             throw new BadCredentialsException("invalid username or password");
         }
     }
@@ -74,11 +88,16 @@ public class AuthRestController {
 
         String validateResult = "";
 
+        log.info("IN REST: Registration request received, validation begins");
+
         validateResult = validator.registerFormValidate(requestDto);
 
         if (!validateResult.equals("ok")) {
+            log.debug("IN REST: Validation failed. Result: {}", validateResult);
             return new ResponseEntity<>(validateResult, HttpStatus.BAD_REQUEST);
         }
+
+        log.debug("IN REST: Validation Passed");
 
         User user = new User();
         user.setEmail(requestDto.getEmail());

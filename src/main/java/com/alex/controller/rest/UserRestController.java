@@ -11,6 +11,8 @@ import com.alex.security.jwt.JwtTokenProvider;
 import com.alex.service.CarService;
 import com.alex.service.UserService;
 import com.alex.util.RestValidator;
+import com.alex.util.UserInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,30 +30,39 @@ import java.util.List;
  * @project CarShowRoomApp
  */
 
+@Slf4j
 @RestController
 @RequestMapping(value = "/api/")
 public class UserRestController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    CarService carService;
+    private final CarService carService;
 
-    @Autowired
-    RestValidator validator;
+    private final RestValidator validator;
 
-    @Autowired
-    JwtTokenProvider jwtTokenProvider;
+    private final UserInfo userInfo;
+
+    public UserRestController(UserService userService, CarService carService, RestValidator validator, UserInfo userInfo) {
+        this.userService = userService;
+        this.carService = carService;
+        this.validator = validator;
+        this.userInfo = userInfo;
+    }
 
     @GetMapping("/cars")
-    public ResponseEntity<List<Car>> getCars() {
+    public ResponseEntity<List<Car>> getCars(HttpServletRequest req) {
+
+        log.info("IN REST: Received a request from user {} to show all cars", userInfo.getJwtUserEmail(req));
 
         return new ResponseEntity<>(carService.showAllCars(), HttpStatus.OK);
     }
 
     @GetMapping("/cars/{maker}")
-    public ResponseEntity<List<Car>> getCarsByMaker(@PathVariable(name = "maker") String maker) {
+    public ResponseEntity<List<Car>> getCarsByMaker(@PathVariable(name = "maker") String maker,
+                                                    HttpServletRequest req) {
+
+        log.info("IN REST: Received a request from user {} to show car by maker: {}", userInfo.getJwtUserEmail(req), maker);
 
         List<Car> cars = carService.findCarByMaker(maker);
         if (!cars.isEmpty()) {
@@ -62,7 +73,10 @@ public class UserRestController {
     }
 
     @PostMapping(value = "/cars/adv-search", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> searchCars(@RequestBody ParametersDto prm) {
+    public ResponseEntity<Object> searchCars(@RequestBody ParametersDto prm,
+                                             HttpServletRequest req) {
+
+        log.info("IN REST: Received a request from user {} to adv search", userInfo.getJwtUserEmail(req));
 
         String validateResult = validator.carParamsValidate(prm);
         if (!validateResult.equals("ok")) {
@@ -83,9 +97,9 @@ public class UserRestController {
                                           @PathVariable(name = "enhId") int enhId,
                                           HttpServletRequest req) {
 
+        log.info("IN REST: Received a request from user {} to order car by id: {}", userInfo.getJwtUserEmail(req), carId);
 
-        String userEmail = jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req));
-        User user = userService.findByEmail(userEmail);
+        User user = userService.findByEmail(userInfo.getJwtUserEmail(req));
 
         if (!carService.isAvailable(carId)) {
            return new ResponseEntity<>("The car is already sold", HttpStatus.NO_CONTENT);
