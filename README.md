@@ -18,5 +18,5 @@
 -Spring Security
 -JavaScript, Ajax, jQuery
 -Bootstrap, JSP
--Log4j
+-Slf4j
 
