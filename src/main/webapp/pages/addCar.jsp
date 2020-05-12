@@ -1,7 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   Created by IntelliJ IDEA.
-  User: Alxandr Chesnokov
+  User: Alexandr Chesnokov
   Date: 08.05.2020
   Time: 2:12
   To change this template use File | Settings | File Templates.
