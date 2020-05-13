@@ -45,7 +45,7 @@ public class AuthController {
         log.info("user validated");
         userService.save(user);
 
-        return "welcome";
+        return "sign_in";
     }
 
     @RequestMapping("/login")

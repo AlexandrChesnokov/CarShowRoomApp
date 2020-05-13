@@ -2,122 +2,206 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <head>
     <meta charset="utf-8">
-    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
-    <script src="https://rawgit.com/notifyjs/notifyjs/master/dist/notify.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- <link
+     rel="stylesheet"
+     href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+     integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+     crossorigin="anonymous"
+   /> -->
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.4.1/darkly/bootstrap.min.css"
+    />
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"
+            integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ="
+            crossorigin="anonymous"
+    />
+    <script
+            src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"
+    ></script>
+    <script
+            src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"
+    ></script>
+    <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+            crossorigin="anonymous"
+    ></script>
+
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"
+            integrity="sha256-+4KHeBj6I8jAKAU8xXRMXXlH+sqCvVCoK5GAFkmb+2I="
+            crossorigin="anonymous"
+    ></script>
+
+   <style>
+
+       body {
+           background-image: url("https://images.wallpaperscraft.ru/image/mercedes_benz_amg_gt_s_2016_vid_szadi_102848_1920x1200.jpg");
+       }
+
+       .reg-form {
+           background-color: rgba(0, 0, 0, 0.6);
+           width: 100%;
+           max-width: 500px;
+           position: absolute;
+           left: 50%;
+           top: 50%;
+           transform: translateX(-50%) translateY(-50%);
+       }
+   </style>
 </head>
 <body>
 
 
 
-<form:form  method = "POST" action = "/sign_up" modelAttribute="user" onsubmit="return validate()">
-<table>
-    <tbody>
-        <tr>
-            <td><form:label   cssClass="lbl"  path = "firstname">Name</form:label></td>
-            <td><form:input  name="firstname"  id="firstname" cssClass="textbox"   path = "firstname" /></td>
-            <td><form:errors path = "firstname" cssClass = "error" /></td>
-        </tr>
-        <tr>
-            <td><form:label cssClass="lbl" path = "lastname">Surname</form:label></td>
-            <td> <form:input cssClass="textbox" name="lastname" id="lastname" path = "lastname" /></td>
-            <td><form:errors path = "lastname" cssClass = "error" /></td>
-        </tr>
-        <tr>
-            <td><form:label  cssClass="lbl" path = "phone_number">Phone</form:label></td>
-            <td><form:input cssClass="textbox" name="phone_number" id="phone_number"  path = "phone_number" /></td>
-            <td><form:errors path = "phone_number" cssClass = "error" /></td>
+<form:form class="reg-form p-3 rounded-lg mb-0"  method = "POST" action = "/sign_up" modelAttribute="user" onsubmit="return validate()">
 
-        </tr>
-        <tr>
-            <td><form:label cssClass="lbl" path = "email">Email</form:label></td>
-            <td><form:input cssClass="textbox" name="email" id="email" path = "email" /></td>
-            <td><form:errors path = "email" cssClass = "error" /></td>
-        </tr>
-        <tr>
-            <td><form:label cssClass="lbl" path = "password">Password</form:label></td>
-            <td><form:password cssClass="textbox" name="password" id="password"  path = "password" /></td>
-            <td><form:errors path = "password" cssClass = "error" /></td>
-        </tr>
-        <tr>
-            <td><form:label cssClass="lbl" path = "password2">Confirm password</form:label></td>
-            <td><form:password cssClass="textbox" name="password2" id="password2" path = "password2" /></td>
-            <td><form:errors path = "password2" cssClass = "error" /></td>
-        </tr>
-        <tr>
-            <td colspan = "2">
-                <input id="send" name="send" type = "submit" value = "Submit"/>
-            </td>
-        </tr>
-    </tbody>
-    </table>
+    <fieldset>
+        <legend>Registration</legend>
+        <div class="form-group">
+            <form:label   for="emailInput"  path = "email">Email</form:label>
+            <form:input id="emailInput"  name="email"  path = "email" class="form-control" placeholder="Enter email" />
+            <form:errors path = "email" cssClass = "error" />
+            <div class="invalid-feedback">Incorrect email format</div>
+            <div class="valid-feedback">Success!</div>
+        </div>
+        <div class="form-group">
+            <form:label   for="firstnameInput"  path = "firstname">First name</form:label>
+            <form:input id="firstnameInput" name="firstname"  path = "firstname" class="form-control" placeholder="Enter First name" />
+            <form:errors path = "firstname" cssClass = "error" />
+            <div class="invalid-feedback">Incorrect first name </div>
+            <div class="valid-feedback">Success!</div>
+        </div>
+        <div class="form-group">
+            <form:label   for="lastnameInput"  path = "lastname">Last name</form:label>
+            <form:input id="lastnameInput" name="lastname"  path = "lastname" class="form-control" placeholder="Enter Last name" />
+            <form:errors path = "lastname" cssClass = "error" />
+            <div class="invalid-feedback">Incorrect last name</div>
+            <div class="valid-feedback">Success!</div>
+        </div>
+        <div class="form-group">
+            <form:label   for="phoneInput"  path = "phone_number">Phone number</form:label>
+            <form:input id="phoneInput" name="phone_number"  path = "phone_number" class="form-control" placeholder="Phone number" />
+            <form:errors path = "phone_number" cssClass = "error" />
+            <div class="invalid-feedback">Incorrect phone number</div>
+            <div class="valid-feedback">Success!</div>
+        </div>
+        <div class="form-group">
+            <form:label   for="passInput"  path = "password">Password</form:label>
+            <form:input id="passInput" name="password" type="password"  path = "password" class="form-control" placeholder="Enter password" />
+            <form:errors path = "password" cssClass = "error" />
+            <div class="invalid-feedback">Incorrect password</div>
+            <div class="valid-feedback">Success!</div>
+        </div>
+        <div class="form-group">
+            <form:label   for="passInput2"  path = "password2">Confirm password</form:label>
+            <form:input id="passInput2" name="password2"  type="password" path = "password2" class="form-control" placeholder="Confirm password" />
+            <form:errors path = "password2" cssClass = "error" />
+            <div class="invalid-feedback">Password does not match</div>
+            <div class="valid-feedback">Success!</div>
+        </div>
+        <input type="submit" class="btn btn-success btn-lg btn-block" value="Sign Up">
+
+
+
+    </fieldset>
+
+
 
 </form:form>
 
 <script>
-
     function validate() {
+        var firstname = document.getElementById("firstnameInput");
 
-        var firstname = document.getElementById("firstname");
-        var lastname = document.getElementById("lastname");
-        var phone_number = document.getElementById("phone_number");
-        var email = document.getElementById("email");
-        var password = document.getElementById("password");
-        var password2 = document.getElementById("password2");
+        var lastname = document.getElementById("lastnameInput");
+
+        var phone_number = document.getElementById("phoneInput");
+
+        var email = document.getElementById("emailInput");
+
+        var password = document.getElementById("passInput");
+
+        var password2 = document.getElementById("passInput2");
 
         var emailRGEX = /^[-a-z0-9!#$%&'*+/=?^_`{|}~ ]+(?:\.[-a-z0-9!#$%&'*+/=?^_`{|}~]+)*@(?:[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?\.)*(?:aero|arpa|asia|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel|[a-z][a-z])$/i;
         var phoneRGEX = /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/i;
-        var nameRGEX = /^([А-Я]{1}[а-яё]{1,23}|[A-Z]{1}[a-z]{1,23})$/i;
+        var NAME_REGEX = /^([A-Z]{1}[a-z]{1,23})$/i;
         var phoneResult = phoneRGEX.test(phone_number.value);
         var emailResult = emailRGEX.test(email.value);
-        var fnameResult = nameRGEX.test(firstname.value);
-        var lnameResult = nameRGEX.test(lastname.value);
+        var fnameResult = NAME_REGEX.test(firstname.value);
+        var lnameResult = NAME_REGEX.test(lastname.value);
 
+
+        var count = 0;
+
+        if (emailResult === false) {
+            email.classList.remove('is-valid');
+            email.classList.add('is-invalid');
+           count++;
+        } else {
+            email.classList.remove('is-invalid');
+            email.classList.add('is-valid');
+        }
 
         if (fnameResult === false) {
-            firstname.style.border = "2px solid red";
-
-
-            return false;
+            firstname.classList.remove('is-valid');
+            firstname.classList.add('is-invalid');
+            count++;
         } else {
-            firstname.style.border = "";
+            firstname.classList.remove('is-invalid');
+            firstname.classList.add('is-valid');
         }
 
         if (lnameResult === false) {
-            lastname.style.border = "2px solid red";
-            return false;
+            lastname.classList.remove('is-valid');
+            lastname.classList.add('is-invalid');
+            count++;
         } else {
-            lastname.style.border = "";
+            lastname.classList.remove('is-invalid');
+            lastname.classList.add('is-valid');
         }
 
         if (phoneResult === false) {
-            phone_number.style.border = "2px solid red";
-            return false;
+            phone_number.classList.remove('is-valid');
+            phone_number.classList.add('is-invalid');
+            count++;
         } else {
-            phone_number.style.border = "";
+            phone_number.classList.remove('is-invalid');
+            phone_number.classList.add('is-valid');
         }
 
-        if (emailResult === false) {
-            emailResult.style.border = "2px solid red";
-            return false;
-        } else {
-            emailResult.style.border = "";
-        }
+
 
         if (!password.value || password.value.length < 1 || password.value.length > 16) {
-            password.style.border = "2px solid red";
-            return false;
+            password.classList.remove('is-valid');
+            password.classList.add('is-invalid');
+            count++;
         } else {
-            password.style.border = "";
+            password.classList.remove('is-invalid');
+            password.classList.add('is-valid');
         }
 
-        if (password2 !== password) {
-            password2.style.border = "2px solid red";
-            return false;
+        if (password2.value !== password.value) {
+            password2.classList.remove('is-valid');
+            password2.classList.add('is-invalid');
+            count++;
         } else {
-            password2.style.border = "";
+            password2.classList.remove('is-invalid');
+            password2.classList.add('is-valid');
         }
 
-        return true;
+        return count === 0;
 
     }
 

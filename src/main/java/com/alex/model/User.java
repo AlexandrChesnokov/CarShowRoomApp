@@ -19,7 +19,7 @@ public class User {
     @Size(min = 1, max = 16, message = "Surname should be from 1 to 16 symbols")
     private String lastname;
 
-    @Min(value = 9, message = "need 9")
+
     private String phone_number;
 
     @Email(message = "Invalid Email Format")
