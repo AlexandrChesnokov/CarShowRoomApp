@@ -1,5 +1,5 @@
-drop table if exists makers cascade ;
-create table makers
+
+create table if not exists makers
 (
         id serial not null primary key ,
         name varchar(16) not null
@@ -11,8 +11,7 @@ insert into makers (name) values ('Audi');
 insert into makers (name) values ('Tesla');
 insert into makers (name) values ('Ferrari');
 
-drop table if exists models cascade;
-create table models
+create table if not exists models
 (
         id serial not null primary key ,
         name varchar(16) not null ,
@@ -46,8 +45,7 @@ values ('LaFerrari', 5, 100000, 'red', '2015-01-01', 750);
 insert into models (name, maker_id, price, color, yearissue, hp)
 values ('Superfast', 5, 120000, 'red', '2013-01-01', 840);
 
-drop table if exists users cascade;
-create table users
+create table if not exists users
 (
     id serial not null primary key ,
     firstname varchar(16) not null ,
@@ -65,8 +63,7 @@ values ('Ada', 'Lovelace', '89261234567', 'manager@a.ua', null, '$2a$10$CIy6hcBP
 insert into users (firstname, lastname, phone_number, email, manager_id, password)
 values ('Alan', 'Turing', '89261234567', 'user@a.ua', null, '$2a$10$CIy6hcBPxgflOyj8IRVDj.hegrWet/3UhtKghgLo.Pbku3xOnENee');
 
-drop table if exists roles cascade;
-create table roles
+create table if not exists roles
 (
     id serial not null primary key ,
     name varchar(16) not null
@@ -76,8 +73,7 @@ insert into roles (name) values ('ADMIN');
 insert into roles (name) values ('MANAGER');
 insert into roles (name) values ('USER');
 
-drop table if exists user_roles cascade;
-create table user_roles
+create table if not exists user_roles
 (
     user_id int not null ,
     role_id int not null ,
@@ -90,13 +86,12 @@ insert into user_roles (user_id, role_id) values (1,1);
 insert into user_roles (user_id, role_id) values (2,2);
 insert into user_roles (user_id, role_id) values (3,3);
 
-drop table if exists enhance cascade;
-create table enhance
+create table if not exists enhance
 (
-    id serial not null primary key ,
-    name varchar(16) not null ,
-    price double precision not null ,
-    increase int not null
+    id       serial           not null primary key,
+    name     varchar(16)      not null,
+    price    double precision not null,
+    increase int              not null
 );
 
 insert into enhance (name, price, increase) VALUES ('STAGE 1', 2000, 200);
@@ -105,8 +100,7 @@ insert into enhance (name, price, increase) VALUES ('STAGE 3', 25000, 1000);
 insert into enhance (id, name, price, increase) VALUES (0, 'DEFAULT', 0, 0);
 
 
-drop table if exists orders cascade;
-create table orders
+create table if not exists orders
 (
     id serial not null primary key ,
     user_id int not null ,

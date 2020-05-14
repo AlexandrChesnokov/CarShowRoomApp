@@ -42,7 +42,7 @@
 <form:form method="post" action="/orderCar?carId=${car.id}" modelAttribute="enh">
 
     <form:select path="id">
-        <form:option value="0"></form:option>
+        <form:option value="4"></form:option>
         <form:option value="1">STAGE 1</form:option>
         <form:option value="2">STAGE 2</form:option>
         <form:option value="3">STAGE 3</form:option>
