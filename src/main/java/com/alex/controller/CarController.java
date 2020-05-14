@@ -35,13 +35,13 @@ public class CarController {
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER', 'MANAGER')")
-    @GetMapping("/cars")
+    @GetMapping("cars")
     public String getCars(Model model) throws SQLException {
 
         log.info("Received a request from user {} to show all the cars", userInfo.getUserEmail());
 
         model.addAttribute("cars", carService.showAllCars());
-        return "/cars";
+        return "cars";
 
     }
 
@@ -56,7 +56,7 @@ public class CarController {
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER', 'MANAGER')")
-    @GetMapping("/viewCar")
+    @GetMapping("viewCar")
     public String viewCar(Model model, @RequestParam(name = "id") int id) {
 
         log.info("Received a request from user {} to show car by id {}", userInfo.getUserEmail(), id);
@@ -72,7 +72,7 @@ public class CarController {
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER', 'MANAGER')")
-    @GetMapping("/searchCarsByParams")
+    @GetMapping("searchCarsByParams")
     public String searchCarsByParams(@RequestParam(value = "fromYear") String fromYear,
                                      @RequestParam(value = "toYear") String toYear,
                                      @RequestParam(value = "fromPrice") double fromPrice,
@@ -100,7 +100,7 @@ public class CarController {
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN',  'MANAGER')")
-    @GetMapping("/editCar")
+    @GetMapping("editCar")
     public String editCar(Model model,
                           @RequestParam(value = "id") int id) {
 
@@ -112,7 +112,7 @@ public class CarController {
 
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
-    @PostMapping("/editCar")
+    @PostMapping("editCar")
     public String editCar(@ModelAttribute Car car,
                           @RequestParam int id,
                           Model model) {
@@ -148,13 +148,13 @@ public class CarController {
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER', 'MANAGER')")
-    @GetMapping("/searchCars")
+    @GetMapping("searchCars")
     public String searchCars() {
         return "searchCars";
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
-    @GetMapping("/addCar")
+    @GetMapping("addCar")
     public String addCar(Model model) {
 
         log.info("Received a GET request from user {} to add new car", userInfo.getUserEmail());
@@ -164,7 +164,7 @@ public class CarController {
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
-    @PostMapping("/addCar")
+    @PostMapping("addCar")
     public String addCar(@ModelAttribute Car car, Model model) {
         if (carService.addCar(car)) {
             log.info("Adding a car was successful");
@@ -176,7 +176,7 @@ public class CarController {
         return "welcome";
     }
 
-    @PostMapping("/orderCar")
+    @PostMapping("orderCar")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER', 'MANAGER')")
     public String orderCar(@RequestParam(value = "carId") int carId,
                            @ModelAttribute Enhance enhance,

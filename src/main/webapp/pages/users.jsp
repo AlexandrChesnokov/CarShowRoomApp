@@ -39,13 +39,13 @@
             <td>${user.manager_id}</td>
             <td>${user.password}</td>
             <td>${user.role.name}</td>
-            <td><a href="/changeRole?id=${user.id}">Change role</a></td>
+            <td><a href="changeRole?id=${user.id}">Change role</a></td>
     </tr>
         </c:forEach>
 
-    <a href="/">Main menu</a>
+    <a href="./">Main menu</a>
 
 </table>
-<a href="/logout">Logout</a>
+<a href="logout">Logout</a>
 </body>
 </html>

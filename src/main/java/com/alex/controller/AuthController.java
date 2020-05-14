@@ -26,13 +26,13 @@ public class AuthController {
         this.userService = userService;
     }
 
-    @GetMapping("/sign_up")
+    @GetMapping("sign_up")
     public String getSignUp(Model model) {
         model.addAttribute("user", new User());
         return "sign_up";
     }
 
-    @PostMapping("/sign_up")
+    @PostMapping("sign_up")
     public String signUp(@Valid @ModelAttribute("user")User user, BindingResult result) throws SQLException {
         userValidator.validate(user, result);
 
@@ -46,7 +46,7 @@ public class AuthController {
         return "sign_in";
     }
 
-    @RequestMapping("/login")
+    @RequestMapping("login")
     public String login(@RequestParam(name = "error", required = false)Boolean error,
                         Model model) {
 

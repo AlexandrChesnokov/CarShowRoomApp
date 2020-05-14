@@ -29,15 +29,15 @@
 
 
 
-  <a href="/searchCars" class="btn">Quick search</a>
+  <a href="searchCars" class="btn">Quick search</a>
 
 
-  <a href="/cars" class="btn">Show all cars</a>
+  <a href="cars" class="btn">Show all cars</a>
 
-  <a href="/logout">Logout</a>
+  <a href="logout">Logout</a>
 
   <security:authorize access="hasAuthority('ADMIN')">
-  <a id="" href="/users">Users</a>
+  <a id="" href="users">Users</a>
   </security:authorize>
 
 

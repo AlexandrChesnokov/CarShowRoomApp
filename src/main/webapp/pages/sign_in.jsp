@@ -58,7 +58,7 @@
 
 <body>
 <form
-        action="/login/process"
+        action="login/process"
         method="post"
         class="login-form p-3 rounded-lg mb-0"
 >
@@ -92,7 +92,7 @@
         <button type="submit" class="btn btn-primary mr-2">
             <i class="fas fa-sign-in-alt"></i> Log In
         </button>
-        <a href="/sign_up" class="btn btn-outline-success"
+        <a href="sign_up" class="btn btn-outline-success"
         ><i class="fas fa-user-plus"></i> Sign Up</a
         >
     </fieldset>

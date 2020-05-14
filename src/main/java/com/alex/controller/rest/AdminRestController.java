@@ -22,7 +22,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/api/admin/")
+@RequestMapping(value = "api/admin/")
 public class AdminRestController {
 
     private final UserService userService;
@@ -56,7 +56,7 @@ public class AdminRestController {
     }
 
 
-    @GetMapping(value = "/users")
+    @GetMapping(value = "users")
     public ResponseEntity<List<UserDto>> getAllUsers(HttpServletRequest req) throws SQLException {
 
         log.info("IN REST: Received a request from user {} to show all users", userInfo.getJwtUserEmail(req));
@@ -66,7 +66,7 @@ public class AdminRestController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    @PutMapping("/change-role/{id}/{role}")
+    @PutMapping("change-role/{id}/{role}")
     public ResponseEntity<Object> changeRole(@PathVariable(name = "id")int id,
                                              @PathVariable(name = "role")String role,
                                              HttpServletRequest req) {

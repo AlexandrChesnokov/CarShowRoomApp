@@ -12,7 +12,7 @@
     <title>Change role</title>
 </head>
 <body>
-     <form:form method="post" action="/changeRole?id=${user.id}" modelAttribute="user">
+     <form:form method="post" action="changeRole?id=${user.id}" modelAttribute="user">
 
          <h2>User: ${user.firstname} ${user.lastname}</h2>
          <h2>Current role: ${user.role.name}</h2>
@@ -22,7 +22,7 @@
 
      </form:form>
 
-     <a href="/">Main menu</a>
+     <a href="./">Main menu</a>
 
 </body>
 </html>

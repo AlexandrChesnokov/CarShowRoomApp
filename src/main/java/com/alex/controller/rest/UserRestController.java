@@ -23,7 +23,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/api/")
+@RequestMapping(value = "api/")
 public class UserRestController {
 
     private final UserService userService;
@@ -41,7 +41,7 @@ public class UserRestController {
         this.userInfo = userInfo;
     }
 
-    @GetMapping("/cars")
+    @GetMapping("cars")
     public ResponseEntity<List<Car>> getCars(HttpServletRequest req) {
 
         log.info("IN REST: Received a request from user {} to show all cars", userInfo.getJwtUserEmail(req));
@@ -49,7 +49,7 @@ public class UserRestController {
         return new ResponseEntity<>(carService.showAllCars(), HttpStatus.OK);
     }
 
-    @GetMapping("/cars/{maker}")
+    @GetMapping("cars/{maker}")
     public ResponseEntity<List<Car>> getCarsByMaker(@PathVariable(name = "maker") String maker,
                                                     HttpServletRequest req) {
 
@@ -63,7 +63,7 @@ public class UserRestController {
         }
     }
 
-    @PostMapping(value = "/cars/adv-search", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "cars/adv-search", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> searchCars(@RequestBody ParametersDto prm,
                                              HttpServletRequest req) {
 
@@ -83,7 +83,7 @@ public class UserRestController {
 
     }
 
-    @GetMapping("/cars/to-order/{carId}/{enhId}")
+    @GetMapping("cars/to-order/{carId}/{enhId}")
     public ResponseEntity<Object> toOrder(@PathVariable(name = "carId") int carId,
                                           @PathVariable(name = "enhId") int enhId,
                                           HttpServletRequest req) {

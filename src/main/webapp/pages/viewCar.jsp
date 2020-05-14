@@ -39,7 +39,7 @@
 
 </table>
 
-<form:form method="post" action="/orderCar?carId=${car.id}" modelAttribute="enh">
+<form:form method="post" action="orderCar?carId=${car.id}" modelAttribute="enh">
 
     <form:select path="id">
         <form:option value="4"></form:option>
@@ -50,13 +50,13 @@
     <input onclick="confirm('Are you sure?')" type="submit" value="To order">
 </form:form>
 
-<a href="/">Main menu</a>
+<a href="./">Main menu</a>
 
 
 <security:authorize access="hasAnyAuthority('ADMIN', 'MANAGER')">
-    <a id="" href="/editCar?id=${car.id}">Edit</a>
+    <a id="" href="editCar?id=${car.id}">Edit</a>
 
-    <a id="" onclick="confirm('Are you sure?')" href="/deleteCar?id=${car.id}">Delete</a>
+    <a id="" onclick="confirm('Are you sure?')" href="deleteCar?id=${car.id}">Delete</a>
 
 
 </security:authorize>

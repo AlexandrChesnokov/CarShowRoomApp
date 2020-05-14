@@ -13,7 +13,7 @@
         var request = new XMLHttpRequest();
         function searchInfo() {
             var name = document.carForm.carName.value;
-            var url = "/searchCarsByMaker?maker="+name;
+            var url = "searchCarsByMaker?maker="+name;
             try {
                 request.onreadystatechange = function () {
                     if (request.readyState == 4) {
@@ -36,7 +36,7 @@
             var colorName = document.paramsForm.colorName.value;
             var fromHp = document.paramsForm.fromHp.value;
             var toHp = document.paramsForm.toHp.value;
-            var url = "/searchCarsByParams?fromYear="+fromYear+"&toYear="+toYear
+            var url = "searchCarsByParams?fromYear="+fromYear+"&toYear="+toYear
             +"&fromPrice="+fromPrice+"&toPrice="+toPrice+"&colorName="+colorName
             +"&fromHp="+fromHp+"&toHp="+toHp;
             try {
@@ -62,7 +62,7 @@
     <input type="button" name="button" onclick="searchInfo()" value="search">
 </form>
 
-<a id="" href="/addCar">Add car</a>
+<a id="" href="addCar">Add car</a>
 
 <form name="paramsForm">
     <h2>Year</h2>
@@ -129,7 +129,7 @@
    <p> <input type="button" name="button" onclick="searchByParams()" value="search"></p>
 </form>
 
-<a href="/">Main menu</a>
+<a href="./">Main menu</a>
 
 <span id="myLocation"></span>
 </body>

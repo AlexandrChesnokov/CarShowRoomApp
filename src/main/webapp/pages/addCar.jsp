@@ -12,7 +12,7 @@
     <title>Add car</title>
 </head>
 <body>
-<form:form  action="/addCar" method="post" modelAttribute="car">
+<form:form  action="addCar" method="post" modelAttribute="car">
 
     Maker:  <form:input path="maker_name" value="" type="text"/>
     Model:  <form:input path="name" value="" type="text"/>
@@ -24,6 +24,6 @@
     <input onclick="confirm('Are you sure?')" type="submit" value="Add car">
 
 </form:form>
-<a href="/">Main menu</a>
+<a href="./">Main menu</a>
 </body>
 </html>

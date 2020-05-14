@@ -21,10 +21,10 @@ public class RestSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    private static final String ADMIN_ENDPOINT = "/api/admin/**";
-    private static final String MANAGER_ENDPOINT = "/api/operation/**";
-    private static final String LOGIN_ENDPOINT = "/api/login";
-    private static final String SIGNUP_ENDPOINT = "/api/signup";
+    private static final String ADMIN_ENDPOINT = "api/admin/**";
+    private static final String MANAGER_ENDPOINT = "api/operation/**";
+    private static final String LOGIN_ENDPOINT = "api/login";
+    private static final String SIGNUP_ENDPOINT = "api/signup";
 
 
     public RestSecurityConfig(JwtTokenProvider jwtTokenProvider) {
@@ -37,7 +37,7 @@ public class RestSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .httpBasic().disable()
                 .csrf().disable()
-                .antMatcher("/api/**")
+                .antMatcher("api/**")
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()

@@ -28,7 +28,7 @@ import java.util.Map;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api")
+@RequestMapping("api/")
 public class AuthRestController {
 
 
@@ -51,7 +51,7 @@ public class AuthRestController {
     }
 
 
-    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "login", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Map<Object, Object>> login(@RequestBody AuthRequestDto requestDto) {
 
@@ -81,7 +81,7 @@ public class AuthRestController {
         }
     }
 
-    @PostMapping(value = "/signup", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "signup", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Object> signup(@RequestBody SignUpRequestDto requestDto) throws SQLException {
 

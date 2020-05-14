@@ -12,7 +12,7 @@
     <title>editCar</title>
 </head>
 <body>
-        <form:form name="editForm" action="/editCar?id=${car.id}" method="post" modelAttribute="car">
+        <form:form name="editForm" action="editCar?id=${car.id}" method="post" modelAttribute="car">
 
          price:   <form:input path="price" value="${car.price}" type="number"/>
          hp:   <form:input path="hp" value="${car.hp}" type="number"/>
@@ -21,6 +21,6 @@
             <input onclick="confirm('Are you sure?')" type="submit" value="Apply changes">
 
         </form:form>
-        <a href="/">Main menu</a>
+        <a href="./">Main menu</a>
 </body>
 </html>

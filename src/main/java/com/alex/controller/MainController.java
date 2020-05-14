@@ -45,7 +45,7 @@ public class MainController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping("/users")
+    @GetMapping("users")
     public String getUsers(Model model) throws SQLException {
 
         log.info("Received a request from user {} to show users", userInfo.getUserEmail());
@@ -55,7 +55,7 @@ public class MainController {
 
     }
     @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping("/changeRole")
+    @GetMapping("changeRole")
     public String changeRole(Model model, @RequestParam(value = "id") int id) {
         model.addAttribute("user", userService.findUserById(id));
             return "changeRole";
@@ -64,7 +64,7 @@ public class MainController {
 
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @PostMapping("/changeRole")
+    @PostMapping("changeRole")
     public String changeRole(@RequestParam(value = "id") int id,
                              @ModelAttribute User user,
                              Model model) {

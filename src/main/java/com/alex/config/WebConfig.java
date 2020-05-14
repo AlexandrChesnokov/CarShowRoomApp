@@ -32,15 +32,15 @@ public class WebConfig implements WebMvcConfigurer {
         viewResolver.setSuffix(".jsp");
         viewResolver.setContentType("text/html;charset=UTF-8");
         viewResolver.setCache(false);
-        viewResolver.setPrefix("/pages/");
+        viewResolver.setPrefix("pages/");
         return viewResolver;
 
     }
 
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resources/**")
-                .addResourceLocations("/resources/");
+        registry.addResourceHandler("resources/**")
+                .addResourceLocations("resources/");
     }
 
     @Bean

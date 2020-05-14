@@ -70,7 +70,7 @@
 
 
 
-<form:form class="reg-form p-3 rounded-lg mb-0"  method = "POST" action = "/sign_up" modelAttribute="user" onsubmit="return validate()">
+<form:form class="reg-form p-3 rounded-lg mb-0"  method = "POST" action = "sign_up" modelAttribute="user" onsubmit="return validate()">
 
     <fieldset>
         <legend>Registration</legend>

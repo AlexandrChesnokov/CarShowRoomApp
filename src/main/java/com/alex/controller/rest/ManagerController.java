@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/operation")
+@RequestMapping("api/operation")
 public class ManagerController {
 
     private final UserService userService;
@@ -38,7 +38,7 @@ public class ManagerController {
         this.userInfo = userInfo;
     }
 
-    @PutMapping("/cars/new")
+    @PutMapping("cars/new")
     public ResponseEntity<Object> addCar(@RequestBody CarDto carDto,
                                          HttpServletRequest req) {
 
@@ -53,7 +53,7 @@ public class ManagerController {
         return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
     }
 
-    @PutMapping("/cars/edit/{id}")
+    @PutMapping("cars/edit/{id}")
     public ResponseEntity<Object> editCar(@RequestBody CarEditFormDto editFormDto,
                                           @PathVariable(name = "id") int id,
                                           HttpServletRequest req) {

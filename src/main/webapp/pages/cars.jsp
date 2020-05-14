@@ -26,13 +26,13 @@
         <tr>
             <td>${car.maker_name}</td>
             <td>${car.name}</td>
-            <td><a href="/viewCar?id=${car.id}" target="_blank">View more</a></td>
+            <td><a href="viewCar?id=${car.id}" target="_blank">View more</a></td>
         </tr>
     </c:forEach>
     <input type="button" onclick="history.back();" value="Back"/>
 </table>
 
-<a href="/">Main menu</a>
-<a href="/logout"></a>
+<a href="./">Main menu</a>
+<a href="logout"></a>
 </body>
 </html>
