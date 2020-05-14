@@ -4,9 +4,7 @@ import com.alex.dto.CarDto;
 import com.alex.dto.CarEditFormDto;
 import com.alex.dto.ParametersDto;
 import com.alex.dto.SignUpRequestDto;
-import com.alex.model.Parameters;
 import com.alex.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.regex.Matcher;

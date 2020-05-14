@@ -2,25 +2,18 @@ package com.alex.dao.impl;
 
 import com.alex.dao.CarDao;
 import com.alex.dao.ConnectionPool;
-import com.alex.dao.UserDao;
 import com.alex.model.Car;
 import com.alex.model.Parameters;
-import com.alex.model.Role;
-import com.alex.model.User;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
-import java.util.Set;
 
 @Slf4j
 @Component
@@ -28,7 +21,7 @@ public class CarDaoImpl implements CarDao {
 
 
     @Override
-    public List<Car> showAllCars()  {
+    public List<Car> showAllCars() {
 
 
         List<Car> cars = new ArrayList<>();
@@ -49,7 +42,7 @@ public class CarDaoImpl implements CarDao {
                 car.setMaker_name(rs.getString(8));
                 cars.add(car);
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             log.error("SQLException in showAllCars", e);
         }
 
@@ -77,7 +70,7 @@ public class CarDaoImpl implements CarDao {
 
         List<Car> cars = new ArrayList<>();
 
-        try  (Connection conn = ConnectionPool.getInstance().getConnection()) {
+        try (Connection conn = ConnectionPool.getInstance().getConnection()) {
             PreparedStatement ps = conn.prepareStatement(
                     "select model.*, maker.name from models model join makers maker on model.maker_id = maker.id where yearIssue between ? and ?" +
                             "and price between ? and ? " +
@@ -113,9 +106,9 @@ public class CarDaoImpl implements CarDao {
     }
 
     @Override
-    public List<Car> findCarByMaker(String maker)  {
+    public List<Car> findCarByMaker(String maker) {
         List<Car> cars = new ArrayList<>();
-        try  (Connection conn = ConnectionPool.getInstance().getConnection()) {
+        try (Connection conn = ConnectionPool.getInstance().getConnection()) {
             PreparedStatement ps = conn.prepareStatement(
                     "select models.*,  makers.name\n" +
                             "from makers  join models on makers.id = models.maker_id\n" +
@@ -145,7 +138,7 @@ public class CarDaoImpl implements CarDao {
     @Override
     public Car findCarById(int id) throws SQLException {
 
-        try  (Connection conn = ConnectionPool.getInstance().getConnection()) {
+        try (Connection conn = ConnectionPool.getInstance().getConnection()) {
             PreparedStatement ps = conn.prepareStatement(
                     "select model.*, maker.name\n" +
                             "from models model join makers maker on model.maker_id = maker.id\n" +
@@ -174,7 +167,7 @@ public class CarDaoImpl implements CarDao {
 
     @Override
     public boolean editCarByParams(Car car) {
-        try  (Connection conn = ConnectionPool.getInstance().getConnection()){
+        try (Connection conn = ConnectionPool.getInstance().getConnection()) {
             PreparedStatement ps = conn.prepareStatement(
                     "update models set price = ?, color = ?, hp = ?" +
                             "where id = ?;"
@@ -198,7 +191,7 @@ public class CarDaoImpl implements CarDao {
     public boolean deleteCarById(int id) {
 
 
-        try  (Connection conn = ConnectionPool.getInstance().getConnection()){
+        try (Connection conn = ConnectionPool.getInstance().getConnection()) {
             PreparedStatement ps = conn.prepareStatement(
                     "delete from models where id = ?;"
             );
@@ -224,7 +217,7 @@ public class CarDaoImpl implements CarDao {
 
         System.out.println("1 -" + car.toString());
 
-        try  (Connection conn = ConnectionPool.getInstance().getConnection()) {
+        try (Connection conn = ConnectionPool.getInstance().getConnection()) {
 
             if (!isPresent)
                 addCarMaker(car.getMaker_name());
@@ -255,8 +248,7 @@ public class CarDaoImpl implements CarDao {
     public boolean makerIsPresent(String name) {
 
 
-
-        try  (Connection conn = ConnectionPool.getInstance().getConnection()) {
+        try (Connection conn = ConnectionPool.getInstance().getConnection()) {
             PreparedStatement psCheckMaker = conn.prepareStatement(
                     "select case when exists(select name from makers\n" +
                             "    where name = ?) then 'present' else 'missing' end;"
@@ -273,7 +265,7 @@ public class CarDaoImpl implements CarDao {
             return result.equals("present");
 
         } catch (SQLException e) {
-           log.error("SQLException in makerIsPresent", e);
+            log.error("SQLException in makerIsPresent", e);
         }
         return false;
     }
@@ -281,21 +273,21 @@ public class CarDaoImpl implements CarDao {
     @Override
     public boolean addCarMaker(String name) {
 
-        try  (Connection conn = ConnectionPool.getInstance().getConnection()){
+        try (Connection conn = ConnectionPool.getInstance().getConnection()) {
             PreparedStatement psAddMaker =
                     conn.prepareStatement("insert into makers (name) values (?);");
             psAddMaker.setString(1, name);
             psAddMaker.executeUpdate();
             return true;
         } catch (SQLException e) {
-           log.error("SQLException in addCarMaker", e);
+            log.error("SQLException in addCarMaker", e);
             return false;
         }
     }
 
     @Override
     public int findMakerId(String name) {
-        try  (Connection conn = ConnectionPool.getInstance().getConnection()){
+        try (Connection conn = ConnectionPool.getInstance().getConnection()) {
             PreparedStatement psFindMakerId = conn.prepareStatement("select id from makers where name = ?");
 
             psFindMakerId.setString(1, name);
@@ -310,14 +302,14 @@ public class CarDaoImpl implements CarDao {
             log.error("SQLException in findMakerById");
         }
 
- return 0;
+        return 0;
     }
 
     @Override
     public boolean orderCar(int userId, int carId, int enhanceId) {
 
         double price = sumPrice(carId, enhanceId);
-        try  (Connection conn = ConnectionPool.getInstance().getConnection()){
+        try (Connection conn = ConnectionPool.getInstance().getConnection()) {
 
             PreparedStatement ps = conn
                     .prepareStatement("insert into orders (user_id, model_id, enhance_id, sum_price) " +
@@ -341,7 +333,7 @@ public class CarDaoImpl implements CarDao {
     public double sumPrice(int carId, int enhanceId) {
 
         double price = 0;
-        try  (Connection conn = ConnectionPool.getInstance().getConnection()){
+        try (Connection conn = ConnectionPool.getInstance().getConnection()) {
 
             PreparedStatement ps = conn.prepareStatement("select car.price + enh.price from models car, enhance enh where car.id = ? and enh.id = ?");
 
@@ -366,7 +358,7 @@ public class CarDaoImpl implements CarDao {
     @Override
     public boolean isAvailable(int carId) {
 
-        try  (Connection conn = ConnectionPool.getInstance().getConnection()){
+        try (Connection conn = ConnectionPool.getInstance().getConnection()) {
             PreparedStatement ps = conn.prepareStatement("select case when exists(select model_id from orders where model_id = ?)\n" +
                     "then 'true' else 'false' end;");
 
@@ -379,7 +371,7 @@ public class CarDaoImpl implements CarDao {
             return !result.equals("true");
 
         } catch (SQLException e) {
-           log.error("SQLException in isAvailable", e);
+            log.error("SQLException in isAvailable", e);
         }
 
         return false;

@@ -1,7 +1,6 @@
 package com.alex.dto;
 
 import com.alex.model.Parameters;
-import com.alex.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**

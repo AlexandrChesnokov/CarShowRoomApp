@@ -5,7 +5,6 @@ import com.alex.dao.CarDao;
 import com.alex.model.Car;
 import com.alex.model.Parameters;
 import com.alex.service.CarService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;

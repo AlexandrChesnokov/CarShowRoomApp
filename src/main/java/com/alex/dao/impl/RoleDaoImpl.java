@@ -3,16 +3,15 @@ package com.alex.dao.impl;
 
 import com.alex.dao.ConnectionPool;
 import com.alex.dao.RoleDao;
-import com.alex.dao.UserDao;
 import com.alex.model.Role;
-import com.alex.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.*;
-import java.util.Properties;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 
 @Slf4j
 @Component

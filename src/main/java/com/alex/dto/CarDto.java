@@ -1,7 +1,6 @@
 package com.alex.dto;
 
 import com.alex.model.Car;
-import com.alex.model.Parameters;
 
 /**
  * @author Alexandr Chesnokov

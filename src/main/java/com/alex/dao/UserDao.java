@@ -5,7 +5,7 @@ import com.alex.model.User;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Set;
+
 
 public interface UserDao {
 

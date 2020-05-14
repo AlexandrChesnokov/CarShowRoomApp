@@ -2,7 +2,6 @@ package com.alex.config;
 
 import com.alex.security.jwt.JwtConfigurer;
 import com.alex.security.jwt.JwtTokenProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;

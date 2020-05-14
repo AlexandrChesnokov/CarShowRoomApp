@@ -2,7 +2,6 @@ package com.alex.util;
 
 import com.alex.model.User;
 import com.alex.security.jwt.JwtTokenProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 

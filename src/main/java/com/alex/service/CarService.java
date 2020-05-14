@@ -1,10 +1,7 @@
 package com.alex.service;
 
-import com.alex.dao.CarDao;
 import com.alex.model.Car;
 import com.alex.model.Parameters;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 

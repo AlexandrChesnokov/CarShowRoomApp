@@ -1,25 +1,16 @@
 package com.alex.controller.rest;
 
-import com.alex.dto.CarDto;
-import com.alex.dto.CarEditFormDto;
 import com.alex.dto.ParametersDto;
-import com.alex.dto.UserDto;
 import com.alex.model.Car;
-import com.alex.model.Parameters;
 import com.alex.model.User;
-import com.alex.security.jwt.JwtTokenProvider;
 import com.alex.service.CarService;
 import com.alex.service.UserService;
 import com.alex.util.RestValidator;
 import com.alex.util.UserInfo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.GsonBuilderUtils;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;

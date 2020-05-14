@@ -1,10 +1,10 @@
 package com.alex.model;
 
 
-import org.hibernate.validator.constraints.Range;
+
 
 import javax.validation.constraints.*;
-import java.util.Set;
+
 
 public class User {
 
