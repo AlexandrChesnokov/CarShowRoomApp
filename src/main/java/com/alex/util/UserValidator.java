@@ -2,12 +2,14 @@ package com.alex.util;
 
 import com.alex.dao.UserDao;
 import com.alex.model.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import java.sql.SQLException;
 
+@Slf4j
 @Component
 public class UserValidator implements Validator {
 
@@ -30,7 +32,7 @@ public class UserValidator implements Validator {
                 errors.rejectValue("email", "", "This email is already in use");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("SQLException in validate", e);
         }
     }
 }

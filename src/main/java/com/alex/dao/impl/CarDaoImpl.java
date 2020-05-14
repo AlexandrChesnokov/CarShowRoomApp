@@ -350,7 +350,6 @@ public class CarDaoImpl implements CarDao {
             log.error("SQLException in sumPrice", e);
         }
 
-        System.out.println("Сум прайс вернул = " + price);
         return price;
 
     }

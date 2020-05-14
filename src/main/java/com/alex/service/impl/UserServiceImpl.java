@@ -5,6 +5,7 @@ import com.alex.dao.RoleDao;
 import com.alex.dao.UserDao;
 import com.alex.model.User;
 import com.alex.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     private final UserDao userDAO;
@@ -28,15 +30,26 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public List<User> showAll() throws SQLException {
-        return userDAO.getAll();
+    public List<User> showAll()  {
+        try {
+            return userDAO.getAll();
+        } catch (SQLException e) {
+            log.error("SQLException in showAll", e);
+        }
+
+        return null;
     }
 
     @Override
-    public boolean save(User user) throws SQLException {
+    public boolean save(User user)  {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-       user.setRole(roleDao.getOne(3));
-     return   userDAO.add(user);
+        try {
+            user.setRole(roleDao.getOne(3));
+            return   userDAO.add(user);
+        } catch (SQLException e) {
+            log.error("SQLException in save", e);
+        }
+       return false;
     }
 
     @Override

@@ -5,12 +5,14 @@ import com.alex.dao.CarDao;
 import com.alex.model.Car;
 import com.alex.model.Parameters;
 import com.alex.service.CarService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.List;
 
 @Service
+@Slf4j
 public class CarServiceImpl implements CarService {
 
     private final CarDao carDao;
@@ -25,7 +27,7 @@ public class CarServiceImpl implements CarService {
         try {
             return carDao.showAllCars();
         } catch (SQLException e) {
-            e.printStackTrace();
+           log.error("SQLException in showAllCars", e);
         }
         return null;
     }
@@ -35,7 +37,7 @@ public class CarServiceImpl implements CarService {
         try {
             return carDao.findCarByMaker(maker);
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("SQLException in findCarByMaker", e);
         }
         return null;
     }
@@ -45,7 +47,7 @@ public class CarServiceImpl implements CarService {
         try {
             return carDao.findCarById(id);
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("SQLException in findCarById", e);
         }
         return null;
     }
@@ -55,7 +57,7 @@ public class CarServiceImpl implements CarService {
         try {
             return carDao.findCarsByParams(parameters);
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("SQLException in findCarByParams", e);
         }
         return null;
     }
