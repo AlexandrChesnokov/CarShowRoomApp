@@ -17,8 +17,6 @@ import java.sql.SQLException;
 @Controller
 public class AuthController {
 
-
-
     private final UserValidator userValidator;
 
     private final UserService userService;

@@ -34,12 +34,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Autowired
-    private AuthProviderImpl authProvider;
+    private AuthProviderImpl authProvider; //FIXME error creating bean securityConfig pri constructor injection
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/login", "/sign_up").anonymous()
+                .antMatchers("favicon.ico").permitAll()
                 .and().csrf().disable()
                 .formLogin()
                 .loginPage("/login")

@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class UserInfo {
 
-    final
+    private final
     JwtTokenProvider jwtTokenProvider;
 
     public UserInfo(JwtTokenProvider jwtTokenProvider) {

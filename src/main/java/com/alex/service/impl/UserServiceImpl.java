@@ -19,14 +19,17 @@ import java.util.Set;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserDao userDAO;
+    private final UserDao userDAO;
 
-    @Autowired
-    private RoleDao roleDao;
+    private final RoleDao roleDao;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
+
+    public UserServiceImpl(UserDao userDAO, RoleDao roleDao, PasswordEncoder passwordEncoder) {
+        this.userDAO = userDAO;
+        this.roleDao = roleDao;
+        this.passwordEncoder = passwordEncoder;
+    }
 
 
     @Override

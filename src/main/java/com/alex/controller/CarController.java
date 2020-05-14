@@ -27,12 +27,12 @@ public class CarController {
 
     private final CarService carService;
 
-    @Autowired
-    UserInfo userInfo;
+    private final UserInfo userInfo;
 
 
-    public CarController(CarService carService) {
+    public CarController(CarService carService, UserInfo userInfo) {
         this.carService = carService;
+        this.userInfo = userInfo;
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER', 'MANAGER')")

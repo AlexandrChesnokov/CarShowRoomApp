@@ -19,9 +19,11 @@ import org.springframework.stereotype.Service;
 
 public class JwtUserDetailsService implements UserDetailsService {
 
-    @Autowired
-    UserService userService;
+    private final UserService userService;
 
+    public JwtUserDetailsService(UserService userService) {
+        this.userService = userService;
+    }
 
 
     @Override

@@ -27,10 +27,11 @@ public class RestSecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String LOGIN_ENDPOINT = "/api/login";
     private static final String SIGNUP_ENDPOINT = "/api/signup";
 
-    @Autowired
+
     public RestSecurityConfig(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

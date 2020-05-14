@@ -12,8 +12,11 @@ import java.sql.SQLException;
 @Component
 public class UserValidator implements Validator {
 
-    @Autowired
-    private UserDao userDAO;
+    private final UserDao userDAO;
+
+    public UserValidator(UserDao userDAO) {
+        this.userDAO = userDAO;
+    }
 
     @Override
     public boolean supports(Class<?> aClass) {

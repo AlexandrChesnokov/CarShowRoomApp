@@ -20,8 +20,7 @@ import java.util.regex.Pattern;
 @Component
 public class RestValidator {
 
-    @Autowired
-    UserService userService;
+    private final UserService userService;
 
     private static final String EMAIL_REGEXP = "^[-a-z0-9!#$%&'*+/=?^_`{|}~ ]+(?:\\.[-a-z0-9!#$%&'*+/=?^_`{|}~]+" +
             ")*@(?:[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?\\.)*(?:aero|arpa|" +
@@ -43,6 +42,10 @@ public class RestValidator {
     "violet", "black", "blue", "gray"};
 
     private static final String STATUS_OK = "ok";
+
+    public RestValidator(UserService userService) {
+        this.userService = userService;
+    }
 
     public String registerFormValidate(SignUpRequestDto requestDto) {
 
