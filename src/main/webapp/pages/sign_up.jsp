@@ -43,6 +43,12 @@
             crossorigin="anonymous"
     ></script>
 
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"
+            integrity="sha256-+4KHeBj6I8jAKAU8xXRMXXlH+sqCvVCoK5GAFkmb+2I="
+            crossorigin="anonymous"
+    ></script>
+
    <style>
 
        body {
@@ -120,7 +126,13 @@
 
 </form:form>
 
+
+
+
+
 <script>
+
+
     function validate() {
         var firstname = document.getElementById("firstnameInput");
 
@@ -134,13 +146,10 @@
 
         var password2 = document.getElementById("passInput2");
 
-        var emailRGEX = /^[-a-z0-9!#$%&'*+/=?^_`{|}~ ]+(?:\.[-a-z0-9!#$%&'*+/=?^_`{|}~]+)*@(?:[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?\.)*(?:aero|arpa|asia|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel|[a-z][a-z])$/i;
-        var phoneRGEX = /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/i;
-        var NAME_REGEX = /^([A-Z]{1}[a-z]{1,23})$/i;
-        var phoneResult = phoneRGEX.test(phone_number.value);
-        var emailResult = emailRGEX.test(email.value);
-        var fnameResult = NAME_REGEX.test(firstname.value);
-        var lnameResult = NAME_REGEX.test(lastname.value);
+        var phoneResult = new RegExp("^((8|\\+7)[\\- ]?)?(\\(?\\d{3}\\)?[\\- ]?)?[\\d\\- ]{7,10}$").test(phone_number.value);
+        var emailResult = new RegExp("^[-a-z0-9!#$%&'*+/=?^_`{|}~ ]+(?:\\.[-a-z0-9!#$%&'*+/=?^_`{|}~]+)*@(?:[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?\\.)*(?:aero|arpa|asia|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel|[a-z][a-z])$").test(email.value);
+        var fnameResult = new RegExp("^([A-Z]{1}[a-z]{1,23})$").test(firstname.value);
+        var lnameResult = new RegExp("^([A-Z]{1}[a-z]{1,23})$").test(lastname.value);
 
 
         var count = 0;
