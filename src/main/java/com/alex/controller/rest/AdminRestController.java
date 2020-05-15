@@ -1,6 +1,5 @@
 package com.alex.controller.rest;
 
-import com.alex.dto.UserDto;
 import com.alex.model.Role;
 import com.alex.model.User;
 import com.alex.service.UserService;
@@ -38,7 +37,7 @@ public class AdminRestController {
     }
 
     @GetMapping(value = "users/{id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable(name = "id") int id,
+    public ResponseEntity<User> getUserById(@PathVariable(name = "id") int id,
                                                HttpServletRequest req) {
 
         User user = userService.findUserById(id);
@@ -49,21 +48,19 @@ public class AdminRestController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
-        UserDto result = UserDto.fromUser(user);
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
 
     }
 
 
     @GetMapping(value = "users")
-    public ResponseEntity<List<UserDto>> getAllUsers(HttpServletRequest req) throws SQLException {
+    public ResponseEntity<List<User>> getAllUsers(HttpServletRequest req) throws SQLException {
 
         log.info("IN REST: Received a request from user {} to show all users", userInfo.getJwtUserEmail(req));
 
-        List<UserDto> list = UserDto.fromUserList(userService.showAll());
-
-        return new ResponseEntity<>(list, HttpStatus.OK);
+        return new ResponseEntity<>(userService.showAll(), HttpStatus.OK);
     }
 
     @PutMapping("change-role/{id}/{role}")

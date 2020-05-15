@@ -1,6 +1,5 @@
 package com.alex.controller.rest;
 
-import com.alex.dto.CarDto;
 import com.alex.dto.CarEditFormDto;
 import com.alex.model.Car;
 import com.alex.service.CarService;
@@ -39,17 +38,17 @@ public class ManagerController {
     }
 
     @PutMapping("cars/new")
-    public ResponseEntity<Object> addCar(@RequestBody CarDto carDto,
+    public ResponseEntity<Object> addCar(@RequestBody Car car,
                                          HttpServletRequest req) {
 
         log.info("IN REST: Received a request from user {} to add new car", userInfo.getJwtUserEmail(req));
 
-        if (!validator.newCarValidate(carDto)) {
+        if (!validator.newCarValidate(car)) {
             log.debug("IN REST: Invalid values");
             return new ResponseEntity<>("invalid values", HttpStatus.BAD_REQUEST);
         }
 
-        carService.addCar(carDto.toCar());
+        carService.addCar(car);
         return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
     }
 

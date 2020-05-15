@@ -52,16 +52,19 @@ public class CarDaoImpl implements CarDao {
 
     @Override
     public List<Car> findCarsByParams(Parameters parameters) {
-        if (parameters.getFromYearParam().equals(""))
+        if (parameters.getFromYearParam().equals("")) {
             parameters.setFromYearParam("1945-01-22");
-        else
+        } else {
             parameters.setFromYearParam("" + parameters.getFromYearParam() + "-01-01");
-        if (parameters.getToYearParam().equals(""))
+        }
+        if (parameters.getToYearParam().equals("")) {
             parameters.setToYearParam("2045-01-01");
-        else
+        } else {
             parameters.setToYearParam("" + parameters.getToYearParam() + "-01-01");    //FIXME formatted i prisvaivanie v otdelniy method
+        }
         if (parameters.getColorNameParam().equals(""))
             parameters.setColorNameParam("%");
+
 
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");

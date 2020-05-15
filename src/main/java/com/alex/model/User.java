@@ -3,9 +3,12 @@ package com.alex.model;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.validation.constraints.*;
 
 
+@JsonIgnoreProperties
 public class User {
 
     private int id;

@@ -1,7 +1,7 @@
 package com.alex.controller.rest;
 
-import com.alex.dto.ParametersDto;
 import com.alex.model.Car;
+import com.alex.model.Parameters;
 import com.alex.model.User;
 import com.alex.service.CarService;
 import com.alex.service.UserService;
@@ -64,7 +64,7 @@ public class UserRestController {
     }
 
     @PostMapping(value = "cars/adv-search", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> searchCars(@RequestBody ParametersDto prm,
+    public ResponseEntity<Object> searchCars(@RequestBody Parameters prm,
                                              HttpServletRequest req) {
 
         log.info("IN REST: Received a request from user {} to adv search", userInfo.getJwtUserEmail(req));
@@ -74,12 +74,12 @@ public class UserRestController {
             return new ResponseEntity<>(validateResult, HttpStatus.BAD_REQUEST);
         }
 
-        List<Car> cars = carService.findCarByParams(prm.toParameters());
+        List<Car> cars = carService.findCarByParams(prm);
 
-        if (cars.isEmpty()) {
-            return new ResponseEntity<>(carService.findCarByParams(prm.toParameters()), HttpStatus.NO_CONTENT);
+        if (cars.size() == 0) {
+            return new ResponseEntity<>(cars, HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(carService.findCarByParams(prm.toParameters()), HttpStatus.OK);
+        return new ResponseEntity<>(cars, HttpStatus.OK);
 
     }
 

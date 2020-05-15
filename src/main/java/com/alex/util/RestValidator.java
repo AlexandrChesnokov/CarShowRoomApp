@@ -1,10 +1,11 @@
 package com.alex.util;
 
-import com.alex.dto.CarDto;
 import com.alex.dto.CarEditFormDto;
-import com.alex.dto.ParametersDto;
-import com.alex.dto.SignUpRequestDto;
+import com.alex.model.Car;
+import com.alex.model.Parameters;
+import com.alex.model.User;
 import com.alex.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.regex.Matcher;
@@ -15,6 +16,7 @@ import java.util.regex.Pattern;
  * @project CarShowRoomApp
  */
 
+@Slf4j
 @Component
 public class RestValidator {
 
@@ -45,29 +47,29 @@ public class RestValidator {
         this.userService = userService;
     }
 
-    public String registerFormValidate(SignUpRequestDto requestDto) {
+    public String registerFormValidate(User user) {
 
-        if (!IsCorrectValue(requestDto.getEmail(), EMAIL_REGEXP)) {
+        if (!IsCorrectValue(user.getEmail(), EMAIL_REGEXP)) {
             return "invalid email format";
         }
 
-        if (!IsCorrectValue(requestDto.getPhone_number(), PHONE_REGEX)) {
+        if (!IsCorrectValue(user.getPhone_number(), PHONE_REGEX)) {
             return "invalid phone format";
         }
 
-        if (!IsCorrectValue(requestDto.getFirstname(), NAME_REGEX)) {
+        if (!IsCorrectValue(user.getFirstname(), NAME_REGEX)) {
             return "firstname invalid format";
         }
 
-        if (!IsCorrectValue(requestDto.getLastname(), NAME_REGEX)) {
+        if (!IsCorrectValue(user.getLastname(), NAME_REGEX)) {
             return "lastname invalid format";
         }
 
-        if (requestDto.getPassword().length() < 8 || requestDto.getPassword().length() > 255) {
+        if (user.getPassword().length() < 8 || user.getPassword().length() > 255) {
             return "password must be between 8 and 255 characters long";
         }
 
-        if (userService.findByEmail(requestDto.getEmail()) != null) {
+        if (userService.findByEmail(user.getEmail()) != null) {
             return "this email is already in use";
         }
 
@@ -80,17 +82,16 @@ public class RestValidator {
         return name.equals("MANAGER") || name.equals("ADMIN") || name.equals("USER");
     }
 
-    public String carParamsValidate(ParametersDto prm) {
+    public String carParamsValidate(Parameters prm) {
 
-        System.out.println(prm.getFromYearParam() + " " + prm.getToYearParam());
 
         if (!IsCorrectValue(prm.getFromYearParam(), CAR_YEAR_REGEX) ||
                 !IsCorrectValue(prm.getToYearParam(), CAR_YEAR_REGEX)) {
             return "incorrect car year value";
         }
 
-        if (!IsCorrectValue(prm.getToPriceParam(), PRICE_REGEX) ||
-                !IsCorrectValue(prm.getFromPriceParam(), PRICE_REGEX)) {
+        if (!IsCorrectValue(String.valueOf((int)prm.getToPriceParam()), PRICE_REGEX) ||
+                !IsCorrectValue(String.valueOf((int)prm.getFromPriceParam()), PRICE_REGEX)) {
             return "incorrect price value";
         }
 
@@ -98,29 +99,34 @@ public class RestValidator {
             return "incorrect color value";
         }
 
-        if (!IsCorrectValue(prm.getFromHpParam(), HORSEPOWER_REGEX) ||
-                !IsCorrectValue(prm.getToHpParam(), HORSEPOWER_REGEX)) {
+        if (!IsCorrectValue(String.valueOf((int)prm.getFromHpParam()), HORSEPOWER_REGEX) ||
+                !IsCorrectValue(String.valueOf((int)prm.getToHpParam()), HORSEPOWER_REGEX)) {
             return "incorrect hp value";
         }
         return STATUS_OK;
     }
 
 
-    public boolean newCarValidate(CarDto carDto) {
+    public boolean newCarValidate(Car car) {
 
-        if (!IsCorrectValue(carDto.getPrice(), PRICE_REGEX)) {
+        if (!IsCorrectValue(String.valueOf((int)car.getPrice()), PRICE_REGEX)) {
+
+            log.debug("incorrect price format");
             return false;
         }
 
-        if (!IsCorrectValue(carDto.getHp(), HORSEPOWER_REGEX)) {
+        if (!IsCorrectValue(String.valueOf(car.getHp()), HORSEPOWER_REGEX)) {
+            log.debug("incorrect hp format");
             return false;
         }
 
-        if (!IsColorPresent(carDto.getColor())) {
+        if (!IsColorPresent(car.getColor())) {
+            log.debug("incorrect color format");
             return false;
         }
 
-        if (!IsCorrectValue(carDto.getYear(), CAR_YEAR_REGEX)) {
+        if (!IsCorrectValue(car.getYear(), CAR_YEAR_REGEX)) {
+            log.debug("incorrect year format");
             return false;
         }
 

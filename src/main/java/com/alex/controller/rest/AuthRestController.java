@@ -1,7 +1,6 @@
 package com.alex.controller.rest;
 
 import com.alex.dto.AuthRequestDto;
-import com.alex.dto.SignUpRequestDto;
 import com.alex.model.User;
 import com.alex.security.jwt.JwtTokenProvider;
 import com.alex.service.UserService;
@@ -83,13 +82,13 @@ public class AuthRestController {
 
     @PostMapping(value = "signup", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<Object> signup(@RequestBody SignUpRequestDto requestDto) throws SQLException {
+    public ResponseEntity<Object> signup(@RequestBody User user) throws SQLException {
 
         String validateResult = "";
 
         log.info("IN REST: Registration request received, validation begins");
 
-        validateResult = validator.registerFormValidate(requestDto);
+        validateResult = validator.registerFormValidate(user);
 
         if (!validateResult.equals("ok")) {
             log.debug("IN REST: Validation failed. Result: {}", validateResult);
@@ -98,12 +97,6 @@ public class AuthRestController {
 
         log.debug("IN REST: Validation Passed");
 
-        User user = new User();
-        user.setEmail(requestDto.getEmail());
-        user.setPassword(requestDto.getPassword());
-        user.setPhone_number(requestDto.getPhone_number());
-        user.setFirstname(requestDto.getFirstname());
-        user.setLastname(requestDto.getLastname());
 
         userService.save(user);
 
