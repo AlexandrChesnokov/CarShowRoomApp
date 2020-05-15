@@ -1,6 +1,8 @@
 package com.alex.model;
 
 
+import java.util.Objects;
+
 public class Car {
 
     private int id;
@@ -81,5 +83,24 @@ public class Car {
                 ", year='" + year + '\'' +
                 ", hp=" + hp +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Car car = (Car) o;
+        return id == car.id &&
+                Double.compare(car.price, price) == 0 &&
+                hp == car.hp &&
+                Objects.equals(name, car.name) &&
+                Objects.equals(maker_name, car.maker_name) &&
+                Objects.equals(color, car.color) &&
+                Objects.equals(year, car.year);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, maker_name, price, color, year, hp);
     }
 }

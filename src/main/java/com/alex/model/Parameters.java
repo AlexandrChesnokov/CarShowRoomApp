@@ -1,5 +1,7 @@
 package com.alex.model;
 
+import java.util.Objects;
+
 public class Parameters {
 
     String fromYearParam;
@@ -77,5 +79,37 @@ public class Parameters {
 
     public void setToHpParam(double toHpParam) {
         this.toHpParam = toHpParam;
+    }
+
+    @Override
+    public String toString() {
+        return "Parameters{" +
+                "fromYearParam='" + fromYearParam + '\'' +
+                ", toYearParam='" + toYearParam + '\'' +
+                ", fromPriceParam=" + fromPriceParam +
+                ", toPriceParam=" + toPriceParam +
+                ", colorNameParam='" + colorNameParam + '\'' +
+                ", fromHpParam=" + fromHpParam +
+                ", toHpParam=" + toHpParam +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Parameters that = (Parameters) o;
+        return Double.compare(that.fromPriceParam, fromPriceParam) == 0 &&
+                Double.compare(that.toPriceParam, toPriceParam) == 0 &&
+                Double.compare(that.fromHpParam, fromHpParam) == 0 &&
+                Double.compare(that.toHpParam, toHpParam) == 0 &&
+                Objects.equals(fromYearParam, that.fromYearParam) &&
+                Objects.equals(toYearParam, that.toYearParam) &&
+                Objects.equals(colorNameParam, that.colorNameParam);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fromYearParam, toYearParam, fromPriceParam, toPriceParam, colorNameParam, fromHpParam, toHpParam);
     }
 }

@@ -6,6 +6,7 @@ package com.alex.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.validation.constraints.*;
+import java.util.Objects;
 
 
 @JsonIgnoreProperties
@@ -125,5 +126,41 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", role=" + role +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", phone_number='" + phone_number + '\'' +
+                ", email='" + email + '\'' +
+                ", manager_id=" + manager_id +
+                ", password='" + password + '\'' +
+                ", password2='" + password2 + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id &&
+                manager_id == user.manager_id &&
+                Objects.equals(role, user.role) &&
+                Objects.equals(firstname, user.firstname) &&
+                Objects.equals(lastname, user.lastname) &&
+                Objects.equals(phone_number, user.phone_number) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(password2, user.password2);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, role, firstname, lastname, phone_number, email, manager_id, password, password2);
     }
 }
